@@ -21,12 +21,18 @@ router.post("/", wrapAsync(async (req,res) => {
     let x = await Booking.find({}).populate({path:"listing",populate : {
         path : "owner"
     }}).populate("customer");
+    console.log(start);
+    console.log(end);
     let allBookings = x.filter((obj) => {
-        let curr = new Date(obj.bookedAt);
+        let y = new Date(obj.bookedAt);
+        let r = y.toISOString();
+        r = r.replace(r.substring(10),"T00:00:00.000Z");  //making time of every date same
+        let curr = new Date(r);
         if(curr>=start && curr<=end) {
            return obj;
         }
     });
+    console.log(allBookings);
     res.render("allBookings/show.ejs",{allBookings});
 }));
 

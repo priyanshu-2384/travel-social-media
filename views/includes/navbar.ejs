@@ -6,7 +6,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link">Home</a>
                 <a class="nav-link" href="/listings">All Listings</a>
                 <a class="nav-link" href="/listings/new">Add New Listing</a>
             </div>
@@ -18,13 +18,20 @@
                 <h5 class="navbar-nav">Admin Login</h5>
             </div>
             <% } %>
-            <div class="navbar-nav ms-auto">
+            <div class="navbar-nav ms-auto me-2">
                 <% if(!currUser) { %>
                     <a class="nav-link" href="/signup">Sign up</a>
                     <a class="nav-link" href="/login">Log in</a>
                 <% } %>
                 <% if(currUser) { %>
-                    <a class="nav-link" href="/logout">Log out</a>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle me-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            @<%=currUser.username%>
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="nav-link dropdown-item" href="/logout">Log out</a></li>
+                        </ul>
+                    </div>
                 <% } %>
             </div>
         </div>
