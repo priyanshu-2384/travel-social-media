@@ -10,7 +10,7 @@
                 <input name="from" type="date" class="form-control" >
             </div>
             <div class="mb-3">
-                <label for="to" class="form-label">Location</label>
+                <label for="to" class="form-label">to</label>
                 <input  name="to" type="date" class="form-control" >
             </div class="mb-3">
             <button class="btn btn-dark add-btn">Apply</button>
@@ -29,7 +29,6 @@
             <th>Hotel</th>
             <th>Owner</th>
             <th>Amount</th>
-            <th>Guests</th>
         </tr>
 
         <% for(booking of allBookings) {%>
@@ -55,10 +54,8 @@
                 <th>
                     <%=booking.listing.owner.username%>
                 </th>
-                <th></b>&#8377; <%=booking.listing.price.toLocaleString("en-IN")%></th>
-                <th>
-                    <%=booking.guestCount%>
-                </th>
+                <th>&#8377; <%=booking.amount%></th>
+                
             </tr>
             <%}%>
                 <th></th>

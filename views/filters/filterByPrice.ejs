@@ -1,0 +1,18 @@
+<% layout("layouts/boilerplate") %>
+<div class="mb-3 ">
+    <div class="col-6 offset-2 ">
+        <br><br>
+        <h2>Sort By Price</h2>
+        <br>
+        <form method="POST" action="http://localhost:8080/listings">
+            <div class="mb-3">
+                <label for="from" class="form-label">From</label>
+                <input name="from" type="number" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="to" class="form-label">to</label>
+                <input  name="to" type="number" class="form-control" required>
+            </div class="mb-3">
+            <button class="btn btn-dark add-btn">Apply</button>
+    </div>
+</div>

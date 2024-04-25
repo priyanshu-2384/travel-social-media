@@ -32,6 +32,9 @@ const bookingSchema = new Schema({
     },
     guestCount : {
         type : Number
+    },
+    amount : {
+        type : Number
     }
 });
 

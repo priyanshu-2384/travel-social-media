@@ -13,7 +13,7 @@
                 <p class="card-text"> <b>Service Start Date : </b><%=booking.startDate.toString().split(" ").slice(0,4).join("-")%> </p>
                 <p class="card-text"> <b>Service End Date : </b><%=booking.endDate.toString().split(" ").slice(0,4).join("-")%> </p>
                 <p class="card-text"><b>Guests : </b><%=booking.guestCount%> </p>
-                <p class="card-text"><b>Total Amount : </b>&#8377; <%=booking.listing.price.toLocaleString("en-IN")%> </p>
+                <p class="card-text"><b>Total Amount : </b>&#8377; <%=booking.amount.toLocaleString("en-IN")%> </p>
             </div>
         </div>
         <br>

@@ -8,13 +8,33 @@ const {isLoggedIn, isOwner,validateListing} = require("../middleware.js");
 
 //Index Route 
 router.get("/", wrapAsync(async(req,res) => {
-    let allListings = await Listing.find({});
+   let allListings = await Listing.find({});
+   res.render("listings/index.ejs",{allListings});
+}));
+
+router.post("/", wrapAsync(async(req,res) => {
+    let min = 0;
+    let max = 1000000000;
+    if(req.body.from && req.body.to) {
+      min = req.body.from;
+      max = req.body.to;
+    }
+    let totalListings = await Listing.find({});
+    let allListings = [];
+    for(let listing of totalListings) {
+        if(listing.price>=min && listing.price<=max) {
+         allListings.push(listing);
+        }
+    }
     res.render("listings/index.ejs",{ allListings });
 }));
 
 //New Route
 router.get("/new",isLoggedIn, (req,res) => {
    res.render("listings/new.ejs");
+});
+router.get("/filter", (req,res) => {
+   res.render("filters/filterByPrice.ejs");
 });
 
 //Show Route,.... Always put this id route below as if not done, the routes which will be below this and have same url like : /listings/new here new will be intrepreted as id
