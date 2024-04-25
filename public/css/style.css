@@ -117,6 +117,10 @@ body {
 .card-img-top:hover{
     box-shadow: 3px 3px 10px;
 }
+
+.head {
+    display : flex;
+}
 /* 
 .filter {
     display : flex;
