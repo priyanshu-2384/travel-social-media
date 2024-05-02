@@ -4,6 +4,7 @@ const Listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 
 const {isLoggedIn, isOwner,validateListing} = require("../middleware.js");
+const Review = require('../models/review.js');
 
 
 //Index Route 
@@ -36,6 +37,14 @@ router.get("/new",isLoggedIn, (req,res) => {
 router.get("/filter", (req,res) => {
    res.render("filters/filterByPrice.ejs");
 });
+//Get Route Top Rated
+router.get("/topRated", wrapAsync(async (req,res) => {
+   let allListings = await Listing.find();
+   allListings.sort((a,b) => {
+      return b.reviews.length-a.reviews.length;
+   });
+   res.render("listings/index.ejs",{allListings});
+}));
 
 //Show Route,.... Always put this id route below as if not done, the routes which will be below this and have same url like : /listings/new here new will be intrepreted as id
 router.get("/:id", wrapAsync(async (req,res) => {
@@ -87,6 +96,7 @@ router.delete("/:id",isLoggedIn,isOwner, wrapAsync(async (req,res)=>{
    req.flash("success", "Listing Deleted!");
    res.redirect("/listings");
 }));
+
 
 
 module.exports = router;
