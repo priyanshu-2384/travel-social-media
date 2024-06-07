@@ -7,6 +7,7 @@ const Review = require("./models/review.js");
 const Booking = require("./models/booking.js");
 
 const validateListing = (req,res,next) => {
+   console.log("h");
    let {error} = listingSchema.validate(req.body);
    if(error) {
        return new ExpressError(400,error);

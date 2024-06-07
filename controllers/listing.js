@@ -1,3 +1,4 @@
+const Booking = require("../models/booking.js");
 const Listing = require("../models/listing.js");
 
 module.exports.index = async(req,res) => {
@@ -49,9 +50,12 @@ module.exports.showListings = async (req,res) => {
 };
 
 module.exports.createListing = async (req,res) => {
+    let url = req.file.path;
+    let filename = req.file.filename;
     let listing = req.body.listing;
     let newListing = new Listing(listing);
     newListing.owner = req.user._id;  //When user will create a post we will take id of user from sessions and assign that id as owner of the listing
+    newListing.image = { url, filename };
     await newListing.save();
     console.log(newListing);
     req.flash("success", "New Listing Created!");
@@ -65,20 +69,44 @@ module.exports.editListingForm = async (req,res) => {
       req.flash("error", "Listing you requested for does not exist!");
       res.redirect("/listings");
     }
-    res.render("listings/edit.ejs",{listing});
+    let originalUrl = listing.image.url;
+    originalUrl = originalUrl.replace("/upload","/upload/w_250");
+    res.render("listings/edit.ejs",{listing,originalUrl});
 };
 
 module.exports.editListing = async (req,res) => {
     let {id} = req.params;
     let listing = req.body.listing;
     let x = await Listing.findByIdAndUpdate(id, {...listing}, {new : true});
+    
+    if(typeof req.file!=="undefined") {
+        let url = req.file.path;
+        let filename = req.file.filename;
+        x.image = { url, filename };
+        console.log(x);
+        await x.save();
+    }
     req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
 };
 
 module.exports.deleteListing = async (req,res)=>{
     let {id} = req.params;
-    await Listing.findByIdAndDelete(id);
+    let l = await Listing.findByIdAndDelete(id);
+    await Booking.deleteMany({listing:l._id});
     req.flash("success", "Listing Deleted!");
     res.redirect("/listings");
 };
+
+module.exports.search = async (req,res) => {
+    let country = req.body.country;
+    let listings = await Listing.find({}); 
+    let allListings = []
+    for(let l of listings) {
+        console.log(l.country);
+       if(l.country==country) {
+         allListings.push(l);
+       }
+    }
+    res.render("listings/index.ejs",{ allListings });
+}

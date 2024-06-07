@@ -18,6 +18,6 @@ router.get("/login", userController.loginForm);
 //in the post request we have used passport.authenticate() middleware, which will check whether the user exists in the database or not 
 router.post("/login",saveRedirectUrl, passport.authenticate("local", { failureRedirect: "/login", failureFlash: true }), wrapAsync(userController.login));
 
-router.get("/logout",);
+router.get("/logout",userController.logout);
 
 module.exports = router;

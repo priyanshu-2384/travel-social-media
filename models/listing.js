@@ -8,9 +8,8 @@ const listingSchema = new Schema({
     },
     description: String,
     image:  {
-        type : String,
-        default : "https://www.pngkey.com/png/detail/233-2332677_ega-png.png",
-        set : (v) => v===""? "https://www.pngkey.com/png/detail/233-2332677_ega-png.png":v
+        url : String,
+        filename : String
     },
     price: {
         type : Number,

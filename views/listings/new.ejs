@@ -4,7 +4,7 @@
             <br><br>
             <h2>Create new Listing</h2>
             <br>
-            <form method="POST" action="http://localhost:8080/listings">
+            <form method="POST" action="http://localhost:8080/listings" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input placeholder="Enter Title" name="listing[title]" type="text" class="form-control" required>
@@ -33,8 +33,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="image" class="form-label">Image Url</label>
-                    <input placeholder="Enter Image url/link" name="listing[image]" type="text" class="form-control">
+                    <label for="image" class="form-label">Upload Image</label>
+                    <input placeholder="Upload Image" name="listing[image]" type="file" class="form-control" required>
                 </div>
 
                 <div class="mb-3">

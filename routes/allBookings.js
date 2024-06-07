@@ -16,5 +16,4 @@ router.get("/", wrapAsync(async (req,res) => {
 
 //Post Route Filter
 router.post("/", wrapAsync(allBookingController.filter));
-
 module.exports = router;
