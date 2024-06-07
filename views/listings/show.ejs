@@ -18,16 +18,16 @@
         <br>
             <div class="btns">
                 <% if(currUser && currUser._id.equals(listing.owner._id) || (currUser && currUser.username==="priyanshu_2384")) {%>
-                <a href="http://localhost:8080/listings/<%=listing._id%>/edit"
+                <a href="/listings/<%=listing._id%>/edit"
                     class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
                 <br>
-                <form method="POST" action="http://localhost:8080/listings/<%=listing._id%>?_method=DELETE">
+                <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
                     <button class="btn btn-dark offset-5">Delete</button>
                 </form>
                 <%}%>
                 <br>
                 <% if(currUser) {%>
-                <a href="http://localhost:8080/listings/<%=listing._id%>/booking"
+                <a href="/listings/<%=listing._id%>/booking"
                     class="btn btn-dark col-1 offset-3 edit-btn ms-6">Book</a>
                 <% } %>  
             </div>

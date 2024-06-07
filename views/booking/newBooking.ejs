@@ -4,7 +4,7 @@
             <br><br>
             <h2>Book <%=listing.title%></h2>
             <br>
-            <form method="POST" action="http://localhost:8080/listings/<%=listing._id%>/booking">
+            <form method="POST" action="/listings/<%=listing._id%>/booking">
                 <div class="mb-3">
                     <label for="name" class="form-label">FullName</label>
                     <input placeholder="Enter Fullname" name="booking[name]" type="text" class="form-control" required>

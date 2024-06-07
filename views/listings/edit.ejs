@@ -5,7 +5,7 @@
                 <br><br>
                 <h2>Edit this Listing</h2>
                 <br>
-                <form method="POST" action="http://localhost:8080/listings/<%=listing._id%>?_method=PUT" enctype="multipart/form-data">
+                <form method="POST" action="/listings/<%=listing._id%>?_method=PUT" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
                         <input value="<%=listing.title%>" name="listing[title]" type="text" class="form-control" required>
