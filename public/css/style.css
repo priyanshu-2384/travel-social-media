@@ -1,10 +1,36 @@
+:root{
+    --pink: #fe424d;
+}
+.brightmd {
+    --bg: #ffffff;
+    --text: #282828;
+    --sec: #f8f9fa;
+}
+.darkmd{
+    --bg: #282828;
+    --text: #ffffff;
+    --sec: #31363F;
+}
+.dark {
+    border: none;
+    color: var(--text) !important;
+    background-color: transparent;
+}
 body {
     font-family: "Plus Jakarta Sans", sans-serif !important;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
   }
-  
+  .bg {
+    background-color: var(--bg) !important;
+}
+.secbg {
+    background-color: var(--sec) !important;
+}
+.texts {
+    color: var(--text) !important;
+}
   .container {
       flex:1;
   }
