@@ -1,18 +1,18 @@
 <% layout("layouts/boilerplate") %>
 <br>
-    <div class="row">
-        <h1 class="col-6 offset-3 mb-3">Login on WanderLust</h1>
-        <div class="col-6 offset-3">
+    <div class="row texts">
+        <h1 class="col-10 col-md-6 offset-1 offset-md-3 mb-3 texts">Login on WanderLust</h1>
+        <div class="col-10 col-md-6 offset-1 offset-md-3 texts">
             <form action="/login" method="POST">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
+                <div class="mb-3 texts">
+                    <label for="username" class="form-label texts">Username</label>
                     <input name="username" id="username" type="text" class="form-control" required>
                 </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                <div class="mb-3 texts">
+                    <label for="password" class="form-label texts">Password</label>
                     <input name="password" id="password" type="password" class="form-control" required>
                 </div>
-                <button class="btn btn-success">Login</button>
+                <button class="btn btn-success texts">Login</button>
             </form>
         </div>
     </div>

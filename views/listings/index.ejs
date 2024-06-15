@@ -3,7 +3,7 @@
         <br>
         <div class="head">
             <div>
-                <h2>All Listings</h2>
+                <h2 class=" texts">All Listings</h2>
             </div>
             <div class="ms-auto">
                 <div class="dropdown">
@@ -11,10 +11,10 @@
                         aria-expanded="false" style="background-color: rgb(254, 66, 77);">
                         Filter
                     </button>
-                    <ul class="dropdown-menu ">
-                        <li><a class="dropdown-item" href="/listings/filter">By Price</a></li>
-                        <form method="GET" action="/listings/topRated">
-                            <button class="btn btn-light">Top Rated</button>
+                    <ul class="dropdown-menu secbg">
+                        <li><a class="dropdown-item by-price texts" href="/listings/filter">By Price</a></li>
+                        <form method="GET" action="/listings/topRated" class=" by-price">
+                            <button class="btn btn-light texts secbg" style="border: none;">Top Rated</button>
                         </form>
                     </ul>
                 </div>
@@ -24,12 +24,12 @@
         <div class="row row-cols-lg-3 row row-cols-md-2 row row-cols-sm-1 mt-3">
             <% for(listing of allListings) { %>
                 <a href="/listings/<%=listing._id%>" class="listing-link">
-                    <div class="card col listing-card">
-                        <img src="<%=listing.image.url%>" class="card-img-top" alt="listing_image"
+                    <div class="card col listing-card bg">
+                        <img src="<%=listing.image.url%>" class="card-img-top bg" alt="listing_image"
                             style="width: 20rem; height: 20rem;">
                         <div class="card-img-overlay"></div>
                         <div class="card-body">
-                            <p class="card-text">
+                            <p class="card-text texts">
                                 <b>
                                     <%=listing.title%>
                                 </b><br>
