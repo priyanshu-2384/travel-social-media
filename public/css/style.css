@@ -56,7 +56,9 @@ body {
       border : none !important;
       margin-bottom: 2rem;
   }
-  
+  .card-show {
+    border : none !important;
+  }
   .card-img-top {
       border-radius: 1rem !important;
       width: 100% !important;
@@ -89,9 +91,16 @@ body {
   }
   
   .show-img {
-      height:30vh;
+      height:25vw;
   }
-  
+  @media screen and (max-width : 1028px){
+    .show-img {
+        height: 45vh;
+    }
+  }
+  .show-page {
+     justify-content: center !important;
+  }
   .btns {
       display:flex !important;
       color: #222222 !important;

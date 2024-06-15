@@ -1,67 +1,188 @@
 <style>
-     .btn-search {
+    .btn-search {
         background-color: #fe424d;
-        color : #fff;
+        color: #fff;
         border-radius: 25px;
-        padding : 0 1rem 0 1rem;
-     }
-     .btn-search:hover {
+        padding: 0 1rem;
+    }
+
+    .btn-search:hover {
         background-color: #fe424d;
-        color : #fff;
-     }
-     .btn-search i {
-        display : inline;
+        color: #fff;
+    }
+
+    .btn-search i {
+        display: inline;
         margin-right: 0.5rem;
-     }
-     .search-inp {
+    }
+
+    .search-inp {
         border-radius: 25px;
-        padding : 0.5rem 3rem 0.5rem 3rem;
-     }
+        padding: 0.5rem 3rem;
+    }
+
+    .navColor {
+        background: #f8f9fa;
+    }
+
+    .navbar-nav {
+        margin: 5px;
+    }
+
+    .offcanvas-body {
+        padding: 1rem;
+    }
+    .list-group-item {
+        display: flex;
+        align-items: center;
+        font-size: 1.1rem;
+        padding: 0.75rem 1rem;
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+    .list-group-item:last-child {
+        border-bottom: none;
+    }
+    .list-group-item .fa {
+        margin-right: 1rem;
+    }
+    .offcanvas-header h5 {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+    }
+    .profile-img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+    }
+    .profile-head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .offcanvas-header {
+        display: block;
+    }
+    .close-div {
+        display : flex;
+    }
+    .profile-img-navbar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+    }
+
+    @media (max-width: 990px) {
+        .navbar-brand {
+            display: none;
+        }
+    }
+    @media (min-width: 990px) {
+        .navbar-brand-profile {
+            display: none;
+        }
+    }
+
+    @media (max-width: 990px) {
+        .sidebar-profile {
+            display: none;
+        }
+    }
+    
 </style>
 
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+<nav class="navbar navbar-expand-lg border-bottom sticky-top bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/listings"><i class="fa-solid fa-compass"></i></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+        <a class="navbar-brand " href="/listings"><i class="fa-solid fa-compass"></i></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link" href="/listings">Explore</a>
-                <a class="nav-link" href="/listings/new">Add New Listing</a>
+        <% if(currUser) { %>
+            <div class="navbar-brand-profile ms-auto">
+                <button class="nav-link" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#sidebar" aria-controls="sidebar">
+                    <%=currUser.username%>
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Profile Image" class="profile-img-navbar ms-3">
+                    
+                </button>
             </div>
-
-            <% if(currUser && currUser.username==="priyanshu_2384") { %>
-            <div class="navbar-nav ">
-                <a class="nav-link" href="/AllBookings">All Bookings</a>
-            </div>
-            <div class="navbar-nav ms-3">
-                <h5 class="navbar-nav">Admin Login</h5>
-            </div>
-            <% } %>
-
-            <div class="navbar-nav ms-auto">
-                <form class="d-flex" role="search" method="POST" action="/listings/city">
-                    <input class="form-control search-inp me-2" type="search" name="country" placeholder="Search country">
-                    <button class="btn btn-search" type="submit"> <i class="fa-solid fa-magnifying-glass"></i>Search</button>
-                </form>
-            </div>
-            <div class="navbar-nav ms-auto me-2">
-                <% if(!currUser) { %>
-                    <a class="nav-link" href="/signup"><b>Sign up</b></a>
-                    <a class="nav-link" href="/login"><b>Log in</b></a>
+        <% } %>
+        <div class="collapse navbar-collapse navColor" id="navbarNavAltMarkup">
+            <% if(currUser && currUser.username==="priyanshu_2384" ) { %>
+                <div class="navbar-nav">
+                    <h5 class="navbar-nav">Admin Login</h5>
+                </div>
                 <% } %>
-                <% if(currUser) { %>
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle me-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            @<%=currUser.username%>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="nav-link dropdown-item" href="/logout">Log out</a></li>
-                        </ul>
+                    <div class="navbar-nav">
+                        <a class="nav-link" href="/listings">Explore</a>
                     </div>
-                <% } %>
-            </div>
+                    <div class="navbar-nav">
+                        <a class="nav-link" href="/listings/new">Add New Listing</a>
+                    </div>
+                    <% if(currUser && currUser.username==="priyanshu_2384" ) { %>
+                        <div class="navbar-nav">
+                            <a class="nav-link" href="/AllBookings">All Bookings</a>
+                        </div>
+                        <% } %>
+                            <% if(currentPath=="/listings" || currentPath=="/listings/filter/byPrice" || currentPath=="/listings/topRated") { %>
+                            <div class="navbar-nav ms-auto">
+                                <form class="d-flex" role="search" method="POST" action="/listings/city">
+                                    <input class="form-control search-inp me-2" type="search" name="country"
+                                        placeholder="Search country" required>
+                                    <button class="btn btn-search" type="submit"> <i
+                                            class="fa-solid fa-magnifying-glass"></i>Search</button>
+                                </form>
+                            </div>
+                            <% } %>
+                            <div class="navbar-nav ms-auto me-2">
+                                <% if(!currUser) { %>
+                                    <div class="navbar-nav">
+                                        <a class="nav-link" href="/signup"><b>Sign up</b></a>
+                                    </div>
+                                    <div class="navbar-nav">
+                                        <a class="nav-link" href="/login"><b>Log in</b></a>
+                                    </div>
+                                    <% } %>
+                                        <% if(currUser) { %>
+                                            <div class="navbar-nav sidebar-profile ms-auto">
+                                                <button class="nav-link" type="button" data-bs-toggle="offcanvas"
+                                                    data-bs-target="#sidebar" aria-controls="sidebar">
+                                                    <%=currUser.username%>
+                                                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Profile Image" class="profile-img-navbar ms-3">
+                                                    
+                                                </button>
+                                            </div>
+                                        <% } %>
+                            </div>
         </div>
     </div>
 </nav>
+
+<% if(currUser) { %>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+    <div class="offcanvas-header">
+        <div class="close-div">
+        <h5>  </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="profile-head">
+        <a href="/profile">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" style="object-fit: cover;"  alt="Profile Image" class="profile-img mb-3">
+        </a>
+        <h5 id="sidebarLabel"><%=currUser.username%></h5>
+        </div>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="list-group">
+            <li class="list-group-item"><i class="fas fa-user me-2"></i><a class="nav-link" href="/profile"> Profile</a></li>
+            <li class="list-group-item"><i class="fa-solid fa-house me-2"></i><a class="nav-link" href="/myBookings">My Bookings</a></li>
+            <li class="list-group-item"><i class="fas fa-question-circle me-2"></i><a class="nav-link" href="/help"> Help</a></li>
+            <li class="list-group-item"><i class="fas fa-envelope me-2"></i><a class="nav-link" href="/contact"> Contact</a></li>
+            <li class="list-group-item"><i class="fas fa-sign-out-alt me-2"></i><a class="nav-link" href="/logout"> Logout</a></li>
+        </ul>
+    </div>
+</div>
+<% } %>
