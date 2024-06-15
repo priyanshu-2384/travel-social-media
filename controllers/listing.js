@@ -103,7 +103,6 @@ module.exports.search = async (req,res) => {
     let listings = await Listing.find({}); 
     let allListings = []
     for(let l of listings) {
-        console.log(l.country);
        if(l.country==country) {
          allListings.push(l);
        }

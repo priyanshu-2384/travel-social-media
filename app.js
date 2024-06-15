@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
-//const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";//
 const dBUrl = process.env.ATLASDB_URL;
 
 async function main() {
@@ -84,6 +84,7 @@ app.use((req, res, next) => {      //This middleware is used to store the sessio
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.currUser = req.user;
+    res.locals.currentPath = req.path;
     next();
 });
 

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/css/rating.css">
 </head>
 
-<body>
+<body class="darkmd">
     <%- include("../includes/navbar.ejs") %>
     <%- include("../includes/flash.ejs") %>
         <div class="container"><%- body %></div>
@@ -28,4 +28,35 @@
                 crossorigin="anonymous"></script>
             <script src="/js/script.js"></script>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const themeButton = document.getElementById("mode");
+    const themeIcon = themeButton.querySelector("i");
+
+    // Function to apply the theme
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            document.body.classList.add("darkmd");
+            themeIcon.classList.remove("fa-moon");
+            themeIcon.classList.add("fa-sun");
+        } else {
+            document.body.classList.remove("darkmd");
+            themeIcon.classList.remove("fa-sun");
+            themeIcon.classList.add("fa-moon");
+        }
+    }
+
+    // Load theme from local storage
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+
+    themeButton.onclick = function () {
+        const currentTheme = document.body.classList.contains("darkmd") ? 'dark' : 'light';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        applyTheme(newTheme);
+        // Save the new theme in local storage
+        localStorage.setItem('theme', newTheme);
+    }
+});
+</script>
 </html>
