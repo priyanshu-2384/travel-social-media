@@ -1,44 +1,39 @@
 <% layout("layouts/boilerplate") %>
-    <div class="row">
-        <div class="col-8 offset-2">
+<div class="row texts">
+    <div class="col-8 offset-2 texts">
+        <br><br>
+        <h2 class="texts">Book <%=listing.title%></h2>
+        <br>
+        <form method="POST" action="/listings/<%=listing._id%>/booking">
+            <div class="mb-3 texts">
+                <label for="name" class="form-label texts">FullName</label>
+                <input placeholder="Enter Fullname" name="booking[name]" type="text" class="form-control" required>
+            </div>
+
+            <div class="mb-3 texts">
+                <label for="phone" class="form-label texts">Phone No.</label>
+                <input placeholder="Enter Mobile Number" name="booking[phone]" type="text" class="form-control" required>
+            </div>
+
+            <div class="row texts">
+                <div class="mb-3 col-md-8 texts">
+                    <label for="startDate" class="form-label texts">Start Date</label>
+                    <input placeholder="Enter Start Date" name="booking[startDate]" type="date" class="form-control" required>
+                </div>
+
+                <div class="mb-3 col-md-4 texts">
+                    <label for="endDate" class="form-label texts">End Date</label>
+                    <input placeholder="Enter End Date" name="booking[endDate]" type="date" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="mb-3 texts">
+                <label for="guestCount" class="form-label texts">Guest Count</label>
+                <input placeholder="Enter Guest Count" name="booking[guestCount]" type="number" class="form-control">
+            </div>
+
+            <button class="btn btn-dark add-btn texts">Confirm Booking</button>
             <br><br>
-            <h2>Book <%=listing.title%></h2>
-            <br>
-            <form method="POST" action="/listings/<%=listing._id%>/booking">
-                <div class="mb-3">
-                    <label for="name" class="form-label">FullName</label>
-                    <input placeholder="Enter Fullname" name="booking[name]" type="text" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Phone No.</label>
-                    <input placeholder="Enter Mobile Number" name="booking[phone]" type="text" class="form-control"
-                        required>
-                </div class="mb-3">
-
-                <div class="row">
-
-                    <div class="mb-3 col-md-8">
-                        <label for="startDate" class="form-label">Start Date</label>
-                        <input placeholder="Enter Start Date" name="booking[startDate]" type="date" class="form-control"
-                            required>
-                    </div>
-
-                    <div class="mb-3 col-md-4">
-                        <label for="endDate" class="form-label">End Date</label>
-                        <input placeholder="Enter End Date" name="booking[endDate]" type="date"
-                            class="form-control" required>
-                    </div>
-
-                </div>
-
-                <div class="mb-3">
-                    <label for="guestCount" class="form-label">Guest Count</label>
-                    <input placeholder="Enter Guest Count" name="booking[guestCount]" type="number" class="form-control">
-                </div>
-
-                <button class="btn btn-dark add-btn">Confirm Booking</button>
-                <br><br>
-            </form>
-        </div>
+        </form>
     </div>
+</div>

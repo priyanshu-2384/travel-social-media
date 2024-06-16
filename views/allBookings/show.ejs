@@ -1,63 +1,63 @@
 <% layout("layouts/boilerplate") %>
-<div class="mb-3 ">
-    <div class="col-6 offset-2 ">
+<div class="mb-3 texts">
+    <div class="col-6 offset-2 texts">
         <br><br>
-        <h2>Sort By Booking Date</h2>
+        <h2 class="texts">Sort By Booking Date</h2>
         <br>
         <form method="POST" action="/allBookings">
-            <div class="mb-3">
-                <label for="from" class="form-label">From</label>
+            <div class="mb-3 texts">
+                <label for="from" class="form-label texts">From</label>
                 <input name="from" type="date" class="form-control" >
             </div>
-            <div class="mb-3">
-                <label for="to" class="form-label">to</label>
-                <input  name="to" type="date" class="form-control" >
-            </div class="mb-3">
-            <button class="btn btn-dark add-btn">Apply</button>
+            <div class="mb-3 texts">
+                <label for="to" class="form-label texts">To</label>
+                <input name="to" type="date" class="form-control" >
+            </div>
+            <button class="btn btn-dark add-btn texts">Apply</button>
+        </form>
     </div>
 </div>
 
-    <h3 style="text-align: center;">All Bookings</h3>
-    <table class="table table-striped table-hover">
-        <caption>All Bookings</caption>
-        <tr>
-            <th>Booking Date</th>
-            <th>User</th>
-            <th>Reserved From</th>
-            <th>Reserved till</th>
-            <th>Phone</th>
-            <th>Hotel</th>
-            <th>Owner</th>
-            <th>Amount</th>
+<h3 class="texts" style="text-align: center;">All Bookings</h3>
+<div class="texts">
+    <table class="table table-striped table-hover texts">
+        <caption class="texts">All Bookings</caption>
+        <tr class="texts" style="border: 1px solid white;">
+            <th class="texts bg">Booking Date</th>
+            <th class="texts bg">User</th>
+            <th class="texts bg">Reserved From</th>
+            <th class="texts bg">Reserved Till</th>
+            <th class="texts bg">Phone</th>
+            <th class="texts bg">Hotel</th>
+            <th class="texts bg">Owner</th>
+            <th class="texts bg">Amount</th>
         </tr>
 
         <% for(booking of allBookings) {%>
-            <tr>
-                <th>
-                    <%=booking.bookedAt.toString().split(" ").slice(0,4).join(" -")%>
-                </th>
-                <th>
-                    <%=booking.customer.username%>
-                </th>
-                <th>
-                    <%=booking.startDate.toString().split(" ").slice(0,4).join(" -")%>
-                </th>
-                <th>
-                    <%=booking.endDate.toString().split(" ").slice(0,4).join(" -")%>
-                </th>
-                <th>
-                    <%=booking.phone%>
-                </th>
-                <th>
-                    <%=booking.listing.title%>
-                </th>
-                <th>
-                    <%=booking.listing.owner.username%>
-                </th>
-                <th>&#8377; <%=booking.amount%></th>
-                
-            </tr>
-            <%}%>
-                <th></th>
+        <tr class="texts" style="border: 1px solid white;">
+            <td class="texts secbg">
+                <%=booking.bookedAt.toString().split(" ").slice(0,4).join(" -")%>
+            </td>
+            <td class="texts secbg">
+                <%=booking.customer.username%>
+            </td>
+            <td class="texts secbg">
+                <%=booking.startDate.toString().split(" ").slice(0,4).join(" -")%>
+            </td>
+            <td class="texts secbg">
+                <%=booking.endDate.toString().split(" ").slice(0,4).join(" -")%>
+            </td>
+            <td class="texts secbg">
+                <%=booking.phone%>
+            </td>
+            <td class="texts secbg">
+                <%=booking.listing.title%>
+            </td>
+            <td class="texts secbg">
+                <%=booking.listing.owner.username%>
+            </td>
+            <td class="texts secbg">&#8377; <%=booking.amount%></td>
+        </tr>
+        <% } %>
     </table>
-    </div>
+</div>

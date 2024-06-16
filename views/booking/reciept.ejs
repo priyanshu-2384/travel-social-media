@@ -1,27 +1,23 @@
 <% layout("layouts/boilerplate") %>
-    <div class="row">
-        <div class="col-8 offset-3 mt-3">
-            <h2>Booking Succesfull!!</h2>
-            
-        </div>
-        <div class="card col-6 offset-3 mt-2 show-card listing-card">
-            <div class="card-body">
-                <p class="card-text"><b>Property : </b><i><%=booking.listing.title%>, <%=listing.location%>, <%=listing.country%> </i></p>
-                <p class="card-text"> <b>Owned By : </b><%=booking.listing.owner.username%> </p>
-                <p class="card-text"><b>Customer name : </b><%=booking.name%> </p>
-                <p class="card-text"> <b>Phone No. : </b><%=booking.phone%> </p>
-                <p class="card-text"> <b>Service Start Date : </b><%=booking.startDate.toString().split(" ").slice(0,4).join("-")%> </p>
-                <p class="card-text"> <b>Service End Date : </b><%=booking.endDate.toString().split(" ").slice(0,4).join("-")%> </p>
-                <p class="card-text"><b>Guests : </b><%=booking.guestCount%> </p>
-                <p class="card-text"><b>Total Amount : </b>&#8377; <%=booking.amount.toLocaleString("en-IN")%> </p>
-            </div>
-        </div>
-        <br>
-            <div class="btns">
-                <a href="/listings/<%=booking.listing._id%>"
-                    class="btn btn-dark col-1 offset-3 edit-btn">Back</a>
-                <a href="javascript:window.print();" 
-                class="btn btn-dark col-1 offset-3 edit-btn">Print</a>
-            </div>
-         
+<div class="row texts">
+    <div class="col-8 offset-3 mt-3 texts">
+        <h2 class="texts">Booking Succesfull!!</h2>
     </div>
+    <div class="card col-6 offset-3 mt-2 show-card listing-card texts">
+        <div class="card-body texts">
+            <p class="card-text texts"><b>Property : </b><i><%=booking.listing.title%>, <%=listing.location%>, <%=listing.country%> </i></p>
+            <p class="card-text texts"><b>Owned By : </b><%=booking.listing.owner.username%> </p>
+            <p class="card-text texts"><b>Customer name : </b><%=booking.name%> </p>
+            <p class="card-text texts"><b>Phone No. : </b><%=booking.phone%> </p>
+            <p class="card-text texts"><b>Service Start Date : </b><%=booking.startDate.toString().split(" ").slice(0,4).join("-")%> </p>
+            <p class="card-text texts"><b>Service End Date : </b><%=booking.endDate.toString().split(" ").slice(0,4).join("-")%> </p>
+            <p class="card-text texts"><b>Guests : </b><%=booking.guestCount%> </p>
+            <p class="card-text texts"><b>Total Amount : </b>&#8377; <%=booking.amount.toLocaleString("en-IN")%> </p>
+        </div>
+    </div>
+    <br>
+    <div class="btns texts">
+        <a href="/listings/<%=booking.listing._id%>" class="btn btn-dark col-1 offset-3 edit-btn texts">Back</a>
+        <a href="javascript:window.print();" class="btn btn-dark col-1 offset-3 edit-btn texts">Print</a>
+    </div>
+</div>

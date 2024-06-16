@@ -1,15 +1,13 @@
 <style>
     :root {
         --pink: #fe424d;
-    }
-
-    .brightmd {
         --bg: #ffffff;
         --text: #282828;
-        --sec: #f8f9fa;
+        --sec: #e8e8e8;
     }
 
     .darkmd {
+        --pink: #fe424d;
         --bg: #282828;
         --text: #ffffff;
         --sec: #31363F;
@@ -131,11 +129,6 @@
             display: none;
         }
     }
-
-    .navicon {
-        background-color: transparent !important;
-    }
-
     @media (min-width: 990px) {
         .navbar-brand-profile {
             display: none;
@@ -148,13 +141,14 @@
         }
     }
 
-    .form-control:focus {
+    .search-inp:focus {
         box-shadow: 0 0 0 0.2rem var(--pink) !important;
         border-color: var(--pink) !important;
     }
 
-    .form-control {
-        background-color: var(--sec) !important;
+    .search-inp {
+        border-color: var(--text) !important;
+        background-color: var(--bg) !important;
     }
     .navbar-brand-signup-login {
         display: flex;
@@ -162,14 +156,14 @@
     }
 </style>
 
-<nav class="navbar navbar-expand-lg border-bottom sticky-top bg-body-tertiary secbg">
+<nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary secbg">
     <div class="container-fluid secbg">
         <button class="navbar-toggler texts navbtn me-3" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
         aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand navicon" href="/listings"><i class="fa-solid fa-compass"></i></a>
+        <a class="navbar-brand " href="/listings"><i class="fa-solid fa-compass"></i></a>
         <div class="bright-dark-mode me-2">
         <button class="dark" id="mode"><i class="fa-solid fa-moon" style="font-size: larger;"></i></button>
         </div>

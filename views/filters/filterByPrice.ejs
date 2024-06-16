@@ -1,18 +1,19 @@
 <% layout("layouts/boilerplate") %>
-<div class="mb-3 ">
-    <div class="col-6 offset-2 ">
+<div class="mb-3 texts">
+    <div class="col-10 col-md-6 offset-1 offset-md-3 texts">
         <br><br>
-        <h2>Sort By Price</h2>
+        <h2 class="texts">Sort By Price</h2>
         <br>
         <form method="POST" action="/listings/filter/byPrice">
-            <div class="mb-3">
-                <label for="from" class="form-label">From</label>
+            <div class="mb-3 texts">
+                <label for="from" class="form-label texts">From</label>
                 <input name="from" type="number" class="form-control" required>
             </div>
-            <div class="mb-3">
-                <label for="to" class="form-label">to</label>
-                <input  name="to" type="number" class="form-control" required>
-            </div class="mb-3">
-            <button class="btn btn-dark add-btn">Apply</button>
+            <div class="mb-3 texts">
+                <label for="to" class="form-label texts">To</label>
+                <input name="to" type="number" class="form-control" required>
+            </div>
+            <button class="btn btn-dark add-btn texts">Apply</button>
+        </form>
     </div>
 </div>
