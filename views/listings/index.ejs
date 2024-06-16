@@ -13,7 +13,7 @@
                     </button>
                     <ul class="dropdown-menu secbg">
                         <li><a class="dropdown-item by-price texts" href="/listings/filter">By Price</a></li>
-                        <form method="GET" action="/listings/topRated" class=" by-price">
+                        <form method="GET" action="/listings/topRated" class="by-price">
                             <button class="btn btn-light texts secbg" style="border: none;">Top Rated</button>
                         </form>
                     </ul>
@@ -25,9 +25,8 @@
             <% for(listing of allListings) { %>
                 <a href="/listings/<%=listing._id%>" class="listing-link">
                     <div class="card col listing-card bg">
-                        <img src="<%=listing.image.url%>" class="card-img-top bg" alt="listing_image"
+                        <img src="<%=listing.image.url%>" class="card-img-top img-hover bg" alt="listing_image"
                             style="width: 20rem; height: 20rem;">
-                        <div class="card-img-overlay"></div>
                         <div class="card-body">
                             <p class="card-text texts">
                                 <b>

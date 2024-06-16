@@ -129,14 +129,7 @@
     }
 
     /* Card Affect */
-    .card-img-overlay {
-        opacity: 0;
-    }
-
-    .card-img-overlay:hover {
-        opacity: 0.3;
-        background-color: white;
-    }
+   
 
     .add-btn,
     .edit-btn {
@@ -176,11 +169,14 @@
         opacity: 0.7;
     }
 
-    .card-img-top {
+    .img-hover {
+        opacity: 1;
         box-shadow: 2px 2px 5px;
     }
 
-    .card-img-top:hover {
+    .img-hover:hover {
+        opacity: 0.7;
+        background-color: white;
         box-shadow: 3px 3px 10px;
     }
 
