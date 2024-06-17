@@ -1,0 +1,45 @@
+<% layout("layouts/boilerplate") %>
+
+    <div class="row texts">
+        <div class="col-12 col-md-8 offset-0 offset-md-2 texts">
+            <br><br>
+            <h2 class="texts">Profile</h2>
+            <br>
+            <form method="POST" action="" enctype="multipart/form-data" class="profile-form secbg">
+                <div class="profile-page-img mb-5">
+                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                        style="margin-top: 15px; margin-bottom: 20px; border-radius: 10px;"
+                        class="col-8 col-lg-5 offset-2 offset-lg-1" />
+                    <h1 class="texts col-10 col-lg-4 offset-1">UserName</h1>
+                </div>
+
+                <div class="mb-3 col-10">
+                    <input value="currUser[fulluame]" name="currUser[fulluame]" type="text" class="form-control" required>
+                </div>
+
+                <div class="mb-3 col-10">
+                    <input value="currUser[Contact_No]" name="currUser[Contact_No]" type="text" class="form-control" required>
+                </div>
+
+                <div class="mb-3 col-10">
+                    <input value="currUser[email]" name="currUser[email]" type="text" class="form-control" required>
+                </div>
+
+                <div class="mb-3 col-10" style="display: flex; flex-direction: column;">
+                    <input value="2018-07-22" name="currUser[dob]" type="date" class="form-control"
+                        required>
+                </div>
+
+                <div class="mb-3 texts col-10">
+                    <label for="image" class="form-label texts">Change Profile Image</label>
+                    <input name="currUser[image]" type="file" class="form-control">
+                </div>
+
+                <div class="mb-3 texts col-10">
+                    <textarea name="currUser[address]" class="form-control texts"
+                        required>currUser[address]</textarea>
+                </div>
+                <button class="btn btn-dark add-btn texts mb-3 col-4 col-md-2 offset-6 offset-md-8">Save Changes</button>
+            </form>
+        </div>
+    </div>
