@@ -41,3 +41,10 @@ module.exports.logout =  (req,res,next) => {
         res.redirect("/listings");
     });
 };
+
+//user profile
+module.exports.profile = async (req,res) => {
+    let username = req.user.username;
+    let currUser = await User.find({username : username});
+    res.send(currUser);
+}
