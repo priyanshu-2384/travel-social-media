@@ -204,6 +204,33 @@
     .by-price:hover {
         background-color: rgba(0, 0, 0, 0.162) !important;
     }
+
+    /* profile */ 
+    .profile-form {
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+        border-radius: 20px;
+    }
+    .profile-page-img {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+    }
+    @media (max-width: 990px) {
+        .profile-page-img {
+            flex-direction: column;
+            align-items: unset;
+            justify-content: center;
+        }
+    }
+   
+    .profile-heading {
+        display : flex;
+        width : 320px;
+        justify-content: center;
+    }
     /* 
   .filter {
       display : flex;

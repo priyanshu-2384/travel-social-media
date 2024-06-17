@@ -1,0 +1,56 @@
+<% layout("layouts/boilerplate") %>
+
+    <div class="row texts">
+        <div class="col-12 col-md-8 offset-0 offset-md-2 texts">
+            <br><br>
+            <h2 class="texts">Profile</h2>
+            <br>
+            <form method="POST" action="/profile/<%=currUser.username%>?_method=PUT" enctype="multipart/form-data" class="profile-form secbg">
+                <div class="profile-page-img mb-5">
+                    <img src="<%=currUser.image.url%>"
+                        style="margin-top: 15px; margin-bottom: 20px; border-radius: 10px;"
+                        class="col-8 col-lg-5 offset-2 offset-lg-1" />
+                    <div class="profile-heading ms-sm-2 ms-md-5">
+                    <h2 class="texts" style="max-width: 320px !important; word-wrap: break-word; word-break: break-all; text-align: center;"><%=currUser.username%></h2>
+                    </div>
+                </div>
+                <div class="mb-3 col-10">
+                <label for="image" class="form-label texts">Change Profile Image</label>
+                <input name="currUser[image]" type="file" class="form-control col-10 col-lg-4">
+                </div>
+                <div class="mb-3 col-10">
+                    <label for="fullname" class="form-label texts">Full Name</label>
+                    <input value="<%=currUser.fullname%>" name="currUser[fullname]" type="text" class="form-control" required>
+                </div>
+
+                <div class="mb-3 col-10">
+                    <label for="contact" class="form-label texts">Contact No.</label>
+                    <input value="<%=currUser.contact%>" name="currUser[contact]" type="text" class="form-control">
+                </div>
+
+                <div class="mb-3 col-10">
+                    <label for="email" class="form-label texts">Email</label>
+                    <input value="<%=currUser.email%>" name="currUser[email]" type="text" class="form-control" required>
+                </div>
+
+                <div class="mb-3 col-10" style="display: flex; flex-direction: column;">
+                    <label for="dob" class="form-label texts">Date of Birth</label>
+                    <%if(currUser.dob==null) {%>
+                        <input value="<%=currUser.dob%>" name="currUser[dob]" type="date" class="form-control">
+                    <%} else { %>
+                        <div style="display: flex; flex-direction: row;">
+                            <p class="form-control"><%=currUser.dob.toString().split(" ").slice(0,4).join("-")%></p>
+                            <input value="<%=currUser.dob%>" name="currUser[dob]" type="date" class="form-control ms-3">
+                        </div>
+                    <%}%>
+                </div>
+
+                <div class="mb-3 texts col-10">
+                    <label for="address" class="form-label texts">Address</label>
+                    <textarea name="currUser[address]" class="form-control texts"
+                        required><%=currUser.address%></textarea>
+                </div>
+                <button class="btn btn-dark add-btn texts mb-3 col-4 col-md-2 offset-6 offset-md-8">Save Changes</button>
+            </form>
+        </div>
+    </div>

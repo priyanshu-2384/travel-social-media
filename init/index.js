@@ -2,9 +2,11 @@ const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
 const Booking = require("../models/booking.js");
+const User = require("../models/user.js");
+const Review = require("../models/review.js");
 
 async function main() {
-    await mongoose.connect("database url");
+    await mongoose.connect("mongodb+srv://priyanshu_2384:CPCYX4WKn5Hca5Jr@cluster0.8uhxmqu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 }
 main().then(()=> {
     console.log("Successfully Connected to DB");
@@ -15,10 +17,21 @@ main().then(()=> {
 const initDb = async () => {
     await Listing.deleteMany({});
     await Booking.deleteMany({});
-    initData.data = initData.data.map((obj) => ({...obj,owner : '66637a77496369e99735443f'}));
+    await Review.deleteMany({});
+    initData.data = initData.data.map((obj) => ({...obj,owner : '666fe982516357e7fc9856f3'}));
     await Listing.insertMany(initData.data);
     console.log("Data was initialised");
 };
+
+// const initDbUser = async () => {
+//     let users = await User.find({});
+//     let updatedUsers = users.map((obj) => ({...obj,fullName : "", dob : new Date('2005-03-13'), image : { url : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", filename : ""}, contact : 3333333333, address : ""}));
+//     console.log(updatedUsers);
+//     User.deleteMany({});
+//     await User.insertMany(updatedUsers);
+//     console.log("Data was initialised");
+// };
+
 
 // const temp = async () => {
 //     let bookings =  await Booking.find();
