@@ -1,10 +1,10 @@
 <% layout("layouts/boilerplate") %>
-<div class="row texts">
-    <div class="col-8 offset-3 mt-3 texts">
+<div class="row bg">
+    <div class="col-10 col-md-6 offset-1 offset-md-3 mt-3">
         <h2 class="texts">Booking Succesfull!!</h2>
     </div>
-    <div class="card col-6 offset-3 mt-2 show-card listing-card texts">
-        <div class="card-body texts">
+    <div class="card col-10 col-md-6 offset-1 offset-md-3 mt-2 show-card listing-card secbg">
+        <div class="card-body secbg">
             <p class="card-text texts"><b>Property : </b><i><%=booking.listing.title%>, <%=listing.location%>, <%=listing.country%> </i></p>
             <p class="card-text texts"><b>Owned By : </b><%=booking.listing.owner.username%> </p>
             <p class="card-text texts"><b>Customer name : </b><%=booking.name%> </p>
