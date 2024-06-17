@@ -80,7 +80,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use((req, res, next) => {      //This middleware is used to store the session details in req.local(temp memory in browser) so that we can use it in ejs files also
+app.use( async (req, res, next) => {      //This middleware is used to store the session details in req.local(temp memory in browser) so that we can use it in ejs files also
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.currUser = req.user;
@@ -93,6 +93,7 @@ app.use("/listings/:id/reviews", reviewsRouter);  //use reviews(required above f
 app.use("/", userRouter);
 app.use("/listings/:id/booking", bookingRouter);
 app.use("/allBookings", allBookingsRouter);
+
 
 app.get("*", (req, res, next) => {
     next(new ExpressError(405, "Page Not Found"));

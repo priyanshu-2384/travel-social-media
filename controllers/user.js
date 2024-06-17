@@ -45,6 +45,22 @@ module.exports.logout =  (req,res,next) => {
 //user profile
 module.exports.profile = async (req,res) => {
     let username = req.user.username;
-    let currUser = await User.find({username : username});
-    res.send(currUser);
+    let currUser = await User.findOne({username : username});
+    res.render("users/profile.ejs", {currUser});
 }
+
+module.exports.editProfile = async (req,res) => {
+    let {id : username} = req.params;
+    let userInfo = req.body.currUser;
+    let u = await User.findOne({username : username});
+    let x = await User.findByIdAndUpdate(u._id, {...userInfo}, {new : true});
+    
+    if(typeof req.file!=="undefined") {
+        let url = req.file.path;
+        let filename = req.file.filename;
+        x.image = {url, filename};
+        await x.save();
+    }
+    req.flash("success", "Listing Updated!");
+    res.redirect(`/profile`);
+};

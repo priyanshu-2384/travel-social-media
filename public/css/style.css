@@ -225,6 +225,12 @@
             justify-content: center;
         }
     }
+   
+    .profile-heading {
+        display : flex;
+        width : 320px;
+        justify-content: center;
+    }
     /* 
   .filter {
       display : flex;
