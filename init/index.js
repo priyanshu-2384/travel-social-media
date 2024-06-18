@@ -6,7 +6,7 @@ const User = require("../models/user.js");
 const Review = require("../models/review.js");
 
 async function main() {
-    await mongoose.connect("mongodb+srv://priyanshu_2384:CPCYX4WKn5Hca5Jr@cluster0.8uhxmqu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+    await mongoose.connect("database url");
 }
 main().then(()=> {
     console.log("Successfully Connected to DB");
