@@ -1,0 +1,286 @@
+<% layout("layouts/boilerplate") %>
+    <style>
+        :root {
+            --pink: #fe424d;
+            --bg: #ffffff;
+            --text: #282828;
+            --sec: #ffff;
+        }
+
+        .darkmd {
+            --pink: #fe424d;
+            --bg: #282828;
+            --text: #ffffff;
+            --sec: #31363F;
+        }
+
+        .bg {
+            background-color: var(--bg) !important;
+        }
+
+        .secbg {
+            background-color: var(--sec) !important;
+        }
+
+        .texts {
+            color: var(--text) !important;
+        }
+
+        main {
+            margin-top: 20px;
+        }
+
+        /* Profile */
+        header {
+            margin-bottom: 44px;
+        }
+
+        .header-wrap {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            column-gap: 30px;
+        }
+
+        @media only screen and (max-width: 735px) {
+            header {
+                display: block;
+                margin-bottom: 0px;
+            }
+
+            .header-wrap {
+                display: flex;
+                padding: 14px;
+                column-gap: 0px;
+            }
+        }
+
+        .header-wrap .profile-pic {
+            height: 160px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header-wrap .profile-pic img {
+            width: 150px;
+            height: 150px;
+            border-radius: 1000px;
+            border: 1px solid hsl(0, 0%, 86%);
+        }
+
+        @media only screen and (max-width: 735px) {
+            .header-wrap {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .profile-info .title h2 {
+            font-size: 28px;
+            font-weight: 300;
+        }
+
+        .profile-info .title span {
+            margin-left: 8px;
+        }
+
+        .profile-info .title button {
+            margin-left: 20px;
+        }
+
+        .profile-info .title {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-info .details li {
+            font-size: 16px;
+            font-weight: 400;
+            margin-right: 40px;
+        }
+
+        .profile-info .details li span {
+            font-weight: 600;
+        }
+
+        .profile-info .details ul {
+            display: flex;
+        }
+
+        .profile-info .descriptions h1 {
+            font-weight: 600;
+            line-height: 24px;
+        }
+
+        .profile-info .descriptions span {
+            font-weight: 400;
+            line-height: 24px;
+        }
+
+        .profile-pic {
+            margin-left: 20px;
+            margin-top: 25px;
+            object-fit: cover;
+        }
+
+        li {
+            list-style: none;
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 735px) {
+            .profile-info {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .profile-pic {
+                margin-bottom: 10px;
+                object-fit: cover;
+            }
+
+            .descriptions {
+                padding-bottom: 21px;
+                font-size: 14px;
+                margin-bottom: 0px !important;
+            }
+
+            .profile-info .descriptions h1 {
+                line-height: 20px;
+            }
+
+            .profile-info .descriptions span {
+                line-height: 20px;
+            }
+
+
+        }
+
+        .profile-info .row {
+            margin-bottom: 20px;
+        }
+
+        .profile-info .row.last {
+            margin-bottom: 0px;
+        }
+
+
+        /* Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+        @media only screen and (max-width: 735px) {
+            .gallery {
+                gap: 3px;
+            }
+        }
+
+        .gallery-item {
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            display: block;
+        }
+
+        .gallery-item .media-icon {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+        }
+
+        @media only screen and (max-width: 735px) {
+            main {
+                padding: 0;
+            }
+        }
+
+        button.primary {
+            background: var(--pink);
+            color: white;
+            -webkit-text-fill-color: white;
+        }
+
+        .mobile-only {
+            display: none;
+        }
+    </style>
+
+    <body>
+
+        <main>
+            <header>
+                <div class="header-wrap">
+                    <div class="profile-pic">
+                        <img class="profile-logo" src="<%=user.image.url%>" alt="profile-logo" />
+                    </div>
+                    <div class="profile-info">
+                        <div class="title row">
+                            <span class="verfied-icon"></span>
+                            <div>
+                                <%if(currUser && currUser.username!=user.username) {%>
+                                    <%if(flag) {%>
+                                        <a href="/u/<%=user.username%>/unfollow"><button class="primary btn btn-dark">Unfollow</button></a>
+                                     <% } else { %>
+                                        <a href="/u/<%=user.username%>/follow"><button class="primary btn btn-dark">Follow</button></a>
+                                        <%}%>
+                                     <button class="primary btn btn-dark">Message</button>
+                                <%}%>
+                            </div>
+                        </div>
+                        <div class="desktop-only">
+                            <div class="details row">
+                                <ul style="margin-left: 25px;">
+                                    <li class="texts"><span>
+                                            <%=user.posts.length%>
+                                        </span> journeys</li>
+                                    <li class="texts"><span>
+                                            <%=user.followers.length%>
+                                        </span> explorers</li>
+                                    <li class="texts"><span>
+                                            <%=user.following.length%>
+                                        </span> exploring</li>
+                                </ul>
+                            </div>
+                            <div class="descriptions row last" style="margin-left: 5px;">
+                                <h3 class="texts">
+                                    <%=user.username%>
+                                </h3>
+                                <br><br>
+                                <span class="texts">
+                                    <%=user.description%>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-info mobile-only">
+                    <div class="descriptions row">
+                        <h3 class="texts">
+                            <%=user.username%>
+                        </h3>
+                        <br>
+                        <span class="texts">
+                            <%=user.description%>
+                        </span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="gallery">
+                <% for(let i=0; i<user.posts.length;i++) { %>
+                    <a href="/listings/<%=user.posts[i]._id%>" class="listing-link">
+                        <div class="gallery-item">
+                            <img alt="gallery-post" class="gallery-post" src="<%=user.posts[i].image.list[0].url%>" />
+                        </div>
+                    </a>
+                    <%}%>
+            </div>
+        </main>
+</body>

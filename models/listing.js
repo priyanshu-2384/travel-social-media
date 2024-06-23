@@ -8,8 +8,10 @@ const listingSchema = new Schema({
     },
     description: String,
     image:  {
-        url : String,
-        filename : String
+        list : [{
+           url : String,
+           filename : String
+        }],
     },
     price: {
         type : Number,

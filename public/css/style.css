@@ -239,3 +239,7 @@
       display: inline-block; 
       margin:10px;
   } */
+
+  .card-header-link {
+    text-decoration: none !important;
+  }

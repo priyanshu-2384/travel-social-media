@@ -17,7 +17,7 @@ router.get("/topRated", wrapAsync(listingController.mostReviewed));
 
 //New Route
 router.get("/new",isLoggedIn, listingController.createListingForm);
-router.post("/",upload.single('listing[image]'),validateListing, wrapAsync(listingController.createListing));
+router.post("/",upload.array('images',5),validateListing, wrapAsync(listingController.createListing));
 
 //search route
 router.post("/city",listingController.search);

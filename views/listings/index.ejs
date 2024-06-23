@@ -1,4 +1,20 @@
 <% layout("layouts/boilerplate") %>
+
+    <style>
+        .card-user-title {
+            display: flex;
+            flex-direction: row;
+            padding-left: 0;
+        }
+
+        .user-image-card-title {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 0.6rem;
+            object-fit: cover;
+        }
+    </style>
     <div>
         <br>
         <div class="head">
@@ -12,9 +28,14 @@
                         Filter
                     </button>
                     <ul class="dropdown-menu secbg">
-                        <li><a class="dropdown-item by-price texts secbg" href="/listings/filter" style="display: flex; align-items: center; justify-content: center;"><p style="margin: 0;">By Price</p></a></li>
-                        <form method="GET" action="/listings/topRated" class="by-price dropdown-item secbg" style="display: flex; align-items: center; justify-content: center;">
-                            <button class="btn btn-light texts secbg" style="border: none; background-color: transparent !important;">Top Rated</button>
+                        <li><a class="dropdown-item by-price texts secbg" href="/listings/filter"
+                                style="display: flex; align-items: center; justify-content: center;">
+                                <p style="margin: 0;">By Price</p>
+                            </a></li>
+                        <form method="GET" action="/listings/topRated" class="by-price dropdown-item secbg"
+                            style="display: flex; align-items: center; justify-content: center;">
+                            <button class="btn btn-light texts secbg"
+                                style="border: none; background-color: transparent !important;">Top Rated</button>
                         </form>
                     </ul>
                 </div>
@@ -23,9 +44,17 @@
 
         <div class="row row-cols-lg-3 row row-cols-md-2 row row-cols-sm-1 mt-3">
             <% for(listing of allListings) { %>
-                <a href="/listings/<%=listing._id%>" class="listing-link">
-                    <div class="card col listing-card bg">
-                        <img src="<%=listing.image.url%>" class="card-img-top img-hover bg" alt="listing_image"
+                <div class="card col listing-card bg">
+                    <a href="/u/<%=listing.owner.username%>" class="card-header-link">
+                        <div class="card-body card-user-title">
+                            <img src="<%=listing.owner.image.url%>" class="user-image-card-title">
+                            <h5 class="texts mt-1">
+                                <%=listing.owner.username%>
+                            </h5>
+                        </div>
+                    </a>
+                    <a href="/listings/<%=listing._id%>" class="listing-link">
+                        <img src="<%=listing.image.list[0].url%>" class="card-img-top img-hover bg" alt="listing_image"
                             style="width: 20rem; height: 20rem;">
                         <div class="card-body">
                             <p class="card-text texts">
@@ -35,8 +64,8 @@
                                 &#8377; <%=listing.price.toLocaleString("en-IN")%> /night
                             </p>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
 
                 <%}%>
         </div>

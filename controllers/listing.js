@@ -1,8 +1,9 @@
 const Booking = require("../models/booking.js");
 const Listing = require("../models/listing.js");
+const User = require("../models/user.js");
 
 module.exports.index = async(req,res) => {
-    let allListings = await Listing.find({});
+    let allListings = await Listing.find({}).populate("owner");
     res.render("listings/index.ejs",{allListings});
 };
 
@@ -13,7 +14,7 @@ module.exports.filter = async(req,res) => {
       min = req.body.from;
       max = req.body.to;
     }
-    let totalListings = await Listing.find({});
+    let totalListings = await Listing.find({}).populate("owner");
     let allListings = [];
     for(let listing of totalListings) {
         if(listing.price>=min && listing.price<=max) {
@@ -32,7 +33,7 @@ module.exports.filterShow = (req,res) => {
  };
 
 module.exports.mostReviewed = async (req,res) => {
-    let allListings = await Listing.find();
+    let allListings = await Listing.find().populate("owner");
     allListings.sort((a,b) => {
        return b.reviews.length-a.reviews.length;
     });
@@ -50,14 +51,18 @@ module.exports.showListings = async (req,res) => {
 };
 
 module.exports.createListing = async (req,res) => {
-    let url = req.file.path;
-    let filename = req.file.filename;
+    let images = req.files.map(file => ({
+        url: file.path,
+        filename: file.filename
+    }));
     let listing = req.body.listing;
     let newListing = new Listing(listing);
     newListing.owner = req.user._id;  //When user will create a post we will take id of user from sessions and assign that id as owner of the listing
-    newListing.image = { url, filename };
+    newListing.image.list = images;
     await newListing.save();
-    console.log(newListing);
+    let user = await User.findOne({username : res.locals.currUser.username});
+    user.posts.push(newListing);
+    await user.save();
     req.flash("success", "New Listing Created!");
     res.redirect("/listings");
 };
@@ -90,10 +95,16 @@ module.exports.editListing = async (req,res) => {
     res.redirect(`/listings/${id}`);
 };
 
-module.exports.deleteListing = async (req,res)=>{
+module.exports.deleteListing = async (req,res)=> {
     let {id} = req.params;
     let l = await Listing.findByIdAndDelete(id);
     await Booking.deleteMany({listing:l._id});
+    let user = await User.findOne({username : res.locals.currUser.username}).populate("posts");
+    for (let i=user.posts.length-1; i>=0; i--) {
+        if (user.posts[i]._id==id) {
+           user.posts.splice(i, 1); // Remove the element at index i
+        }
+    }
     req.flash("success", "Listing Deleted!");
     res.redirect("/listings");
 };

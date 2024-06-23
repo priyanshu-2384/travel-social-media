@@ -17,6 +17,28 @@ const userSchema = new Schema({
         type : String,
         required: true
     },
+    followers :[
+        {
+            type : Schema.Types.ObjectId,
+            ref : "User"
+        }
+    ],
+    following : [
+        {
+            type : Schema.Types.ObjectId,
+            ref : "User"
+        }
+    ],
+    posts : [
+        {
+            type : Schema.Types.ObjectId,
+            ref : "Listing"
+        }
+    ],
+    description : {
+        type : String,
+        default : "Explorer of new horizons, capturing moments from every journey. Join me as I share my adventures and discover the world's hidden gems. 🌍✨"
+    },
     dob : Date,
     address : String
      //username and password are automatically created by passport library 

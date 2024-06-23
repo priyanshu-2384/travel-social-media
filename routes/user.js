@@ -24,11 +24,19 @@ router.get("/login", userController.loginForm);
 router.post("/login",saveRedirectUrl, passport.authenticate("local", { failureRedirect: "/login", failureFlash: true }), wrapAsync(userController.login));
 
 router.get("/logout",userController.logout);
-//User profile route get request
+//User my profile  route get request
 router.get("/profile",isLoggedIn, wrapAsync(userController.profile));
-//User Profile put request
+//User my Profile put request
 router.put("/profile/:id",isLoggedIn, upload.single('currUser[image]'),wrapAsync(userController.editProfile));
 
+//User profile by username get request
+router.get("/u/:id",wrapAsync(userController.userProfile));
+
+//Follow post request
+router.get("/u/:id/follow",isLoggedIn,wrapAsync(userController.userFollow));
+
+//Unfollow post request
+router.get("/u/:id/unfollow",isLoggedIn,wrapAsync(userController.userUnfollow));
 
 
 
