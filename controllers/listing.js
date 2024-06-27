@@ -2,89 +2,194 @@ const Booking = require("../models/booking.js");
 const Listing = require("../models/listing.js");
 const User = require("../models/user.js");
 
-module.exports.index = async(req,res) => {
-    let allListings = await Listing.find({}).populate("owner");
-    res.render("listings/index.ejs",{allListings});
-};
-
-module.exports.filter = async(req,res) => {
-    let min = 0;
-    let max = 1000000000;
-    if(req.body.from && req.body.to) {
-      min = req.body.from;
-      max = req.body.to;
+module.exports.index = async (req, res) => {
+    let allListings = await Listing.find({}).populate("owner").populate("likedBy").populate("bookmarkedBy");
+    let likeFlags = [];
+    let bookmarkFlags = [];
+    for (let i = 0; i < allListings.length; i++) {
+        likeFlags[i] = false;
+        bookmarkFlags[i] = false;
     }
-    let totalListings = await Listing.find({}).populate("owner");
-    let allListings = [];
-    for(let listing of totalListings) {
-        if(listing.price>=min && listing.price<=max) {
-         allListings.push(listing);
+    if (typeof res.locals.currUser !== 'undefined') {
+        let currUser = res.locals.currUser;
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].likedBy.length; j++) {
+                if (allListings[i].likedBy[j].username == currUser.username) {
+                    likeFlags[i] = true;
+                    break;
+                }
+            }
+        }
+
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].bookmarkedBy.length; j++) {
+                if (allListings[i].bookmarkedBy[j].username == currUser.username) {
+                    bookmarkFlags[i] = true;
+                    break;
+                }
+            }
         }
     }
-    res.render("listings/index.ejs",{ allListings });
+    res.render("listings/index.ejs", { allListings,likeFlags,bookmarkFlags });
+};
+
+module.exports.filter = async (req, res) => {
+    let min = 0;
+    let max = 1000000000;
+    if (req.body.from && req.body.to) {
+        min = req.body.from;
+        max = req.body.to;
+    }
+    let totalListings = await Listing.find({}).populate("owner").populate("likedBy").populate("bookmarkedBy");
+    let allListings = [];
+    for (let listing of totalListings) {
+        if (listing.price >= min && listing.price <= max) {
+            allListings.push(listing);
+        }
+    }
+
+    let likeFlags = [];
+    let bookmarkFlags = [];
+    for (let i = 0; i < allListings.length; i++) {
+        likeFlags[i] = false;
+        bookmarkFlags[i] = false;
+    }
+    if (typeof res.locals.currUser !== 'undefined') {
+        let currUser = res.locals.currUser;
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].likedBy.length; j++) {
+                if (allListings[i].likedBy[j].username == currUser.username) {
+                    likeFlags[i] = true;
+                    break;
+                }
+            }
+        }
+
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].bookmarkedBy.length; j++) {
+                if (allListings[i].bookmarkedBy[j].username == currUser.username) {
+                    bookmarkFlags[i] = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    res.render("listings/index.ejs", { allListings,likeFlags,bookmarkFlags });
 }
 
-module.exports.createListingForm = (req,res) => {
+module.exports.createListingForm = (req, res) => {
     res.render("listings/new.ejs");
 };
 
-module.exports.filterShow = (req,res) => {
+module.exports.filterShow = (req, res) => {
     res.render("filters/filterByPrice.ejs");
- };
-
-module.exports.mostReviewed = async (req,res) => {
-    let allListings = await Listing.find().populate("owner");
-    allListings.sort((a,b) => {
-       return b.reviews.length-a.reviews.length;
-    });
-    res.render("listings/index.ejs",{allListings});
 };
 
-module.exports.showListings = async (req,res) => {
-    let {id} = req.params;
-    let listing = await Listing.findById(id).populate({path:"reviews",populate : { path: "author"}}).populate("owner");  //nested Population is used here (listing -> reviews -> author)
-    if(!listing) {
+module.exports.mostReviewed = async (req, res) => {
+    let allListings = await Listing.find().populate("owner").populate("likedBy").populate("bookmarkedBy");
+    allListings.sort((a, b) => {
+        return b.reviews.length - a.reviews.length;
+    });
+    
+    let likeFlags = [];
+    let bookmarkFlags = [];
+    for (let i = 0; i < allListings.length; i++) {
+        likeFlags[i] = false;
+        bookmarkFlags[i] = false;
+    }
+    if (typeof res.locals.currUser !== 'undefined') {
+        let currUser = res.locals.currUser;
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].likedBy.length; j++) {
+                if (allListings[i].likedBy[j].username == currUser.username) {
+                    likeFlags[i] = true;
+                    break;
+                }
+            }
+        }
+
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].bookmarkedBy.length; j++) {
+                if (allListings[i].bookmarkedBy[j].username == currUser.username) {
+                    bookmarkFlags[i] = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    res.render("listings/index.ejs", { allListings, likeFlags, bookmarkFlags});
+};
+
+module.exports.showListings = async (req, res) => {
+    let { id } = req.params;
+    let listing = await Listing.findById(id).populate({ path: "reviews", populate: [{ path: "author"},{ path : "replies", populate : "author"}]}).populate("owner").populate("likedBy").populate("bookmarkedBy");  //nested Population is used here (listing -> reviews -> author)
+    if (!listing) {
         req.flash("error", "Listing you requested for does not exist!");
         res.redirect("/listings");
     }
-    res.render("listings/show.ejs",{ listing });
+    let likeFlag = false;
+    let bookmarkFlag = false;
+    if (typeof res.locals.currUser !== 'undefined') {
+        let currUser = res.locals.currUser;
+            for (let j = 0; j < listing.likedBy.length; j++) {
+                if (listing.likedBy[j].username == currUser.username) {
+                    likeFlag = true;
+                    break;
+                }
+            }
+
+            for (let j = 0; j < listing.bookmarkedBy.length; j++) {
+                if (listing.bookmarkedBy[j].username == currUser.username) {
+                    bookmarkFlag = true;
+                    break;
+                }
+            }
+        }
+    res.render("listings/show.ejs", { listing, likeFlag, bookmarkFlag });
 };
 
-module.exports.createListing = async (req,res) => {
+module.exports.createListing = async (req, res) => {
     let images = req.files.map(file => ({
         url: file.path,
         filename: file.filename
     }));
-    let listing = req.body.listing;
-    let newListing = new Listing(listing);
-    newListing.owner = req.user._id;  //When user will create a post we will take id of user from sessions and assign that id as owner of the listing
-    newListing.image.list = images;
+    let listingData = req.body.listing;
+    let newListing = new Listing({
+        ...listingData,
+        owner: req.user._id,
+        image: { list: images }
+    });
     await newListing.save();
-    let user = await User.findOne({username : res.locals.currUser.username});
+
+    let user = await User.findOne({ username: res.locals.currUser.username });
     user.posts.push(newListing);
     await user.save();
+
     req.flash("success", "New Listing Created!");
     res.redirect("/listings");
 };
 
-module.exports.editListingForm = async (req,res) => {
-    let {id} = req.params;
+
+module.exports.editListingForm = async (req, res) => {
+    let { id } = req.params;
     let listing = await Listing.findById(id);
-    if(!listing) {
-      req.flash("error", "Listing you requested for does not exist!");
-      res.redirect("/listings");
+    if (!listing) {
+        req.flash("error", "Listing you requested for does not exist!");
+        res.redirect("/listings");
     }
     let originalUrl = listing.image.url;
-    originalUrl = originalUrl.replace("/upload","/upload/w_250");
-    res.render("listings/edit.ejs",{listing,originalUrl});
+    originalUrl = originalUrl.replace("/upload", "/upload/w_250");
+    res.render("listings/edit.ejs", { listing, originalUrl });
 };
 
-module.exports.editListing = async (req,res) => {
-    let {id} = req.params;
+module.exports.editListing = async (req, res) => {
+    let { id } = req.params;
     let listing = req.body.listing;
-    let x = await Listing.findByIdAndUpdate(id, {...listing}, {new : true});
-    
-    if(typeof req.file!=="undefined") {
+    let x = await Listing.findByIdAndUpdate(id, { ...listing }, { new: true });
+
+    if (typeof req.file !== "undefined") {
         let url = req.file.path;
         let filename = req.file.filename;
         x.image = { url, filename };
@@ -95,28 +200,146 @@ module.exports.editListing = async (req,res) => {
     res.redirect(`/listings/${id}`);
 };
 
-module.exports.deleteListing = async (req,res)=> {
-    let {id} = req.params;
-    let l = await Listing.findByIdAndDelete(id);
-    await Booking.deleteMany({listing:l._id});
-    let user = await User.findOne({username : res.locals.currUser.username}).populate("posts");
-    for (let i=user.posts.length-1; i>=0; i--) {
-        if (user.posts[i]._id==id) {
-           user.posts.splice(i, 1); // Remove the element at index i
-        }
-    }
+module.exports.deleteListing = async (req, res) => {
+    let { id } = req.params;
+    let listing = await Listing.findByIdAndDelete(id).populate("owner");
+
+    await Booking.deleteMany({ listing: listing._id });
+
+    let user = await User.findOne({ username: listing.owner.username }).populate("posts");
+    user.posts = user.posts.filter(post => post._id.toString() !== listing._id.toString());
+    await user.save();
+
     req.flash("success", "Listing Deleted!");
     res.redirect("/listings");
 };
 
-module.exports.search = async (req,res) => {
+
+module.exports.search = async (req, res) => {
     let country = req.body.country;
-    let listings = await Listing.find({}); 
+    let listings = await Listing.find({}).populate("owner").populate("likedBy").populate("bookmarkedBy");
     let allListings = []
-    for(let l of listings) {
-       if(l.country==country) {
-         allListings.push(l);
-       }
+    for (let l of listings) {
+        if (l.country == country) {
+            allListings.push(l);
+        }
     }
-    res.render("listings/index.ejs",{ allListings });
+    let likeFlags = [];
+    let bookmarkFlags = [];
+    for (let i = 0; i < allListings.length; i++) {
+        likeFlags[i] = false;
+        bookmarkFlags[i] = false;
+    }
+    if (typeof res.locals.currUser !== 'undefined') {
+        let currUser = res.locals.currUser;
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].likedBy.length; j++) {
+                if (allListings[i].likedBy[j].username == currUser.username) {
+                    likeFlags[i] = true;
+                    break;
+                }
+            }
+        }
+
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].bookmarkedBy.length; j++) {
+                if (allListings[i].bookmarkedBy[j].username == currUser.username) {
+                    bookmarkFlags[i] = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    res.render("listings/index.ejs", { allListings, likeFlags, bookmarkFlags});
 }
+
+module.exports.like = async (req, res) => {
+    try {
+        let { id } = req.params;
+        let user = await User.findOne({ username: res.locals.currUser.username });
+        let listing = await Listing.findById(id);
+        user.liked.push(listing);
+        user.save();
+        console.log(user.username);
+        listing.likedBy.push(user);
+        listing.save();
+        res.status(200).json({ likesCount: listing.likedBy.length });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while trying to like the post" });
+    }
+}
+
+module.exports.unlike = async (req, res) => {
+    try {
+        let { id } = req.params;
+        let user = await User.findOne({ username: res.locals.currUser.username }).populate("liked");
+        let listing = await Listing.findById(id).populate("likedBy");
+
+        for (let i = user.liked.length - 1; i >= 0; i--) {
+            console.log(user.liked[i]._id);
+            console.log(listing._id);
+            if (user.liked[i]._id.toString() == listing._id.toString()) {
+                user.liked.splice(i, 1); // Remove the element at index i
+                break;
+            }
+        }
+        user.save();
+        for (let i = listing.likedBy.length - 1; i >= 0; i--) {
+            if (listing.likedBy[i].username == user.username) {
+                listing.likedBy.splice(i, 1); // Remove the element at index i
+                break;
+            }
+        }
+        listing.save();
+        res.status(200).json({ likesCount: listing.likedBy.length });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while trying to unlike the post" });
+    }
+}
+
+module.exports.bookmark = async (req, res) => {
+    try {
+        let { id } = req.params;
+        let user = await User.findOne({ username: res.locals.currUser.username });
+        let listing = await Listing.findById(id);
+        user.bookmarks.push(listing);
+        user.save();
+        listing.bookmarkedBy.push(user);
+        listing.save();
+        res.status(200).json({ bookmarksCount: listing.bookmarkedBy.length });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while trying to bookmark the post" });
+    }
+}
+
+module.exports.unbookmark = async (req, res) => {
+    try {
+        let { id } = req.params;
+        let user = await User.findOne({ username: res.locals.currUser.username }).populate("bookmarks");
+        let listing = await Listing.findById(id).populate("bookmarkedBy");
+
+        for (let i = user.bookmarks.length - 1; i >= 0; i--) {
+            if (user.bookmarks[i]._id.toString() == listing._id.toString()) {
+                user.bookmarks.splice(i, 1); // Remove the element at index i
+                break;
+            }
+        }
+        user.save();
+        for (let i = listing.bookmarkedBy.length - 1; i >= 0; i--) {
+            if (listing.bookmarkedBy[i].username == user.username) {
+                listing.bookmarkedBy.splice(i, 1); // Remove the element at index i
+                break;
+            }
+        }
+        listing.save();
+        res.status(200).json({ bookmarksCount: listing.bookmarkedBy.length });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while trying to unbookmark the post" });
+    }
+}
+

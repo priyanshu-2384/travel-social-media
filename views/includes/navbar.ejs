@@ -129,6 +129,7 @@
             display: none;
         }
     }
+
     @media (min-width: 990px) {
         .navbar-brand-profile {
             display: none;
@@ -150,6 +151,7 @@
         border-color: var(--text) !important;
         background-color: var(--bg) !important;
     }
+
     .navbar-brand-signup-login {
         display: flex;
         flex-direction: row;
@@ -159,32 +161,32 @@
 <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary secbg">
     <div class="container-fluid secbg">
         <button class="navbar-toggler texts navbtn me-3" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+            data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand " href="/listings"><i class="fa-solid fa-compass"></i></a>
         <div class="bright-dark-mode me-2">
-        <button class="dark" id="mode"><i class="fa-solid fa-moon" style="font-size: larger;"></i></button>
+            <button class="dark" id="mode"><i class="fa-solid fa-moon" style="font-size: larger;"></i></button>
         </div>
         <div class="navbar-brand-profile ms-auto texts">
             <% if(!currUser) { %>
                 <div class="navbar-brand-signup-login">
-                <div class="navbar-nav">
-                    <a class="nav-link texts" href="/signup"><b>Sign up</b></a>
+                    <div class="navbar-nav">
+                        <a class="nav-link texts" href="/signup"><b>Sign up</b></a>
+                    </div>
+                    <div class="navbar-nav">
+                        <a class="nav-link texts" href="/login"><b>Log in</b></a>
+                    </div>
                 </div>
-                <div class="navbar-nav">
-                    <a class="nav-link texts" href="/login"><b>Log in</b></a>
-                </div>
-            </div>
-                <% }  else { %>
-                        <button class="nav-link texts" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar"
-                            aria-controls="sidebar">
-                            <%=currUser.username%>
-                                <img src="<%=currUser.image.url%>" style="object-fit: cover;"
-                                    alt="Profile Image" class="profile-img-navbar ms-3">
-                        </button>
-                        <% } %>
+                <% } else { %>
+                    <button class="nav-link texts" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar"
+                        aria-controls="sidebar">
+                        <%=currUser.username%>
+                            <img src="<%=currUser.image.url%>" style="object-fit: cover;" alt="Profile Image"
+                                class="profile-img-navbar ms-3">
+                    </button>
+                    <% } %>
         </div>
         <div class="collapse navbar-collapse navColor texts" id="navbarNavAltMarkup">
             <% if(currUser && currUser.username==="priyanshu_2384" ) { %>
@@ -196,48 +198,45 @@
                         <a class="nav-link texts" href="/listings">Explore</a>
                     </div>
                     <div class="navbar-nav">
-                        <a class="nav-link texts" href="/listings/new">Add New Listing</a>
+                        <a class="nav-link texts" href="/listings/new">Create <i class="fa-solid fa-circle-plus"></i></a>
+                    </div>
+                    <div class="navbar-nav">
+                        <a class="nav-link texts" href="/plan">Connect & Plan <i class="fa-solid fa-handshake"></i></a>
                     </div>
 
 
-                    <% if(currUser && currUser.username==="priyanshu_2384" ) { %>
-                        <div class="navbar-nav">
-                            <a class="nav-link texts" href="/AllBookings">All Bookings</a>
+                    <% if(currentPath=="/listings" || currentPath=="/listings/filter/byPrice" ||
+                        currentPath=="/listings/topRated" ) { %>
+                        <div class="navbar-nav ms-auto ">
+                            <form class="d-flex" role="search" method="POST" action="/listings/city">
+                                <input class="form-control search-inp me-2" type="search" name="country"
+                                    placeholder="Search country" required>
+                                <button class="btn btn-search texts" type="submit"> <i
+                                        class="fa-solid fa-magnifying-glass texts"></i>Search</button>
+                            </form>
                         </div>
                         <% } %>
-                            <% if(currentPath=="/listings" || currentPath=="/listings/filter/byPrice" ||
-                                currentPath=="/listings/topRated" ) { %>
-                                <div class="navbar-nav ms-auto ">
-                                    <form class="d-flex" role="search" method="POST" action="/listings/city">
-                                        <input class="form-control search-inp me-2" type="search" name="country"
-                                            placeholder="Search country" required>
-                                        <button class="btn btn-search texts" type="submit"> <i
-                                                class="fa-solid fa-magnifying-glass texts"></i>Search</button>
-                                    </form>
-                                </div>
-                                <% } %>
-                                    <div class="navbar-nav ms-auto d-flex align-items-center">
-                                        <% if(!currUser) { %>
-                                            <div class="navbar-nav sidebar-profile">
-                                                <a class="nav-link texts" href="/signup"><b>Sign up</b></a>
-                                            </div>
-                                            <div class="navbar-nav sidebar-profile">
-                                                <a class="nav-link texts" href="/login"><b>Log in</b></a>
-                                            </div>
-                                            <% }  else { %>
-                                                    <div class="navbar-nav sidebar-profile">
-                                                        <button class="nav-link texts" type="button"
-                                                            data-bs-toggle="offcanvas" data-bs-target="#sidebar"
-                                                            aria-controls="sidebar">
-                                                            <%=currUser.username%>
-                                                                <img src="<%=currUser.image.url%>" style="object-fit: cover;"
-                                                                    alt="Profile Image" class="profile-img-navbar ms-3">
-
-                                                        </button>
-                                                    </div>
-                                                    <% } %>
-
+                            <div class="navbar-nav ms-auto d-flex align-items-center">
+                                <% if(!currUser) { %>
+                                    <div class="navbar-nav sidebar-profile">
+                                        <a class="nav-link texts" href="/signup"><b>Sign up</b></a>
                                     </div>
+                                    <div class="navbar-nav sidebar-profile">
+                                        <a class="nav-link texts" href="/login"><b>Log in</b></a>
+                                    </div>
+                                    <% } else { %>
+                                        <div class="navbar-nav sidebar-profile">
+                                            <button class="nav-link texts" type="button" data-bs-toggle="offcanvas"
+                                                data-bs-target="#sidebar" aria-controls="sidebar">
+                                                <%=currUser.username%>
+                                                    <img src="<%=currUser.image.url%>" style="object-fit: cover;"
+                                                        alt="Profile Image" class="profile-img-navbar ms-3">
+
+                                            </button>
+                                        </div>
+                                        <% } %>
+
+                            </div>
         </div>
 </nav>
 
@@ -250,8 +249,8 @@
             </div>
             <div class="profile-head secbg">
                 <a href="/profile">
-                    <img src="<%=currUser.image.url%>"
-                        style="object-fit: cover;" alt="Profile Image" class="profile-img mb-3">
+                    <img src="<%=currUser.image.url%>" style="object-fit: cover;" alt="Profile Image"
+                        class="profile-img mb-3">
                 </a>
                 <h5 id="sidebarLabel" class="texts">
                     <%= currUser.username %>

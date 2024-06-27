@@ -38,4 +38,15 @@ router.put("/:id",isLoggedIn,isOwner,upload.single('listing[image]'),validateLis
 //Delete Route
 router.delete("/:id",isLoggedIn,isOwner, wrapAsync(listingController.deleteListing));
 
+//Like listing
+router.post("/:id/like",isLoggedIn,wrapAsync(listingController.like));
+//UnLike listing
+router.post("/:id/unlike",isLoggedIn,wrapAsync(listingController.unlike));
+
+//Bookmark listing
+router.post("/:id/bookmark",isLoggedIn,wrapAsync(listingController.bookmark));
+//UnBookmark listing
+router.post("/:id/unbookmark",isLoggedIn,wrapAsync(listingController.unbookmark));
+
+
 module.exports = router;

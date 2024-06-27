@@ -24,7 +24,6 @@ const userRouter = require("./routes/user.js");
 const bookingRouter = require("./routes/booking.js");
 const allBookingsRouter = require("./routes/allBookings.js");
 
-
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -32,8 +31,8 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";//
-const dBUrl = process.env.ATLASDB_URL;
+const MONGO_URL = "mongodb://127.0.0.1:27017/wander";//
+const dBUrl = MONGO_URL;
 
 async function main() {
     await mongoose.connect(dBUrl);
@@ -92,7 +91,7 @@ app.use("/listings", listingsRouter);    //use listings(required above from rout
 app.use("/listings/:id/reviews", reviewsRouter);  //use reviews(required above from routes folder) whenever /listings/:id/reviews comes
 app.use("/", userRouter);
 app.use("/listings/:id/booking", bookingRouter);
-app.use("/allBookings", allBookingsRouter);
+app.use("/plan", allBookingsRouter);
 
 
 app.get("*", (req, res, next) => {

@@ -33,10 +33,10 @@ router.put("/profile/:id",isLoggedIn, upload.single('currUser[image]'),wrapAsync
 router.get("/u/:id",wrapAsync(userController.userProfile));
 
 //Follow post request
-router.get("/u/:id/follow",isLoggedIn,wrapAsync(userController.userFollow));
+router.post("/u/:id/follow",isLoggedIn,wrapAsync(userController.userFollow));
 
 //Unfollow post request
-router.get("/u/:id/unfollow",isLoggedIn,wrapAsync(userController.userUnfollow));
+router.post("/u/:id/unfollow",isLoggedIn,wrapAsync(userController.userUnfollow));
 
 
 

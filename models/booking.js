@@ -2,41 +2,30 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const bookingSchema = new Schema({
-    listing : {
-        type : Schema.Types.ObjectId,
-        ref : "Listing"
+    city: String,
+    intrestedUsers: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    image: {
+        url: String,
+        filename: String
     },
-    customer : {
-        type : Schema.Types.ObjectId,
-        ref : "User"
+    month: {
+        type: String,
+        required: true
     },
-    name : {
-        type :  String,
-        required : true
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review"
+        }
+    ],
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
     },
-    phone : {
-        type : Number,
-        required : true
-    },
-    bookedAt: {
-        type : Date,
-        default : Date.now()
-    },
-    startDate : {
-        type : Date,
-        required : true
-    },
-    endDate : {
-        type : Date,
-        required : true
-    },
-    guestCount : {
-        type : Number
-    },
-    amount : {
-        type : Number
-    }
 });
 
-const Booking = mongoose.model("Booking",bookingSchema);
+const Booking = mongoose.model("Booking", bookingSchema);
 module.exports = Booking;

@@ -39,6 +39,14 @@ const userSchema = new Schema({
         type : String,
         default : "Explorer of new horizons, capturing moments from every journey. Join me as I share my adventures and discover the world's hidden gems. 🌍✨"
     },
+    bookmarks : [{
+        type : Schema.Types.ObjectId,
+        ref : "Listing"
+    }],
+    liked : [{
+        type : Schema.Types.ObjectId,
+        ref : "Listing"
+    }],
     dob : Date,
     address : String
      //username and password are automatically created by passport library 

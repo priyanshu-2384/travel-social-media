@@ -89,39 +89,47 @@ module.exports.userProfile = async (req, res) => {
 //user follow
 
 module.exports.userFollow = async (req, res) => {
-    let { id: username } = req.params;
-    let user = await User.findOne({ username: username });
-    let currUser = await User.findOne({ username: res.locals.currUser.username }).populate("following");
-    if (user.username == currUser.username) {
-        return;
+    try {
+        let { id: username } = req.params;
+        let user = await User.findOne({ username: username });
+        let currUser = await User.findOne({ username: res.locals.currUser.username }).populate("following");
+        if (user.username == currUser.username) {
+            return res.status(400).json({ message: "You cannot follow yourself." });
+        }
+        user.followers.push(currUser);
+        user.save();
+        currUser.following.push(user);
+        currUser.save();
+        res.status(200).json({ followersCount: user.followers.length })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while trying to follow the user." });
     }
-    user.followers.push(currUser);
-    user.save();
-    currUser.following.push(user);
-    currUser.save();
-    req.flash("success", `You are now following ${user.username}`);
-    res.redirect(`/u/${username}`);
 }
 
 module.exports.userUnfollow = async (req, res) => {
-    let { id: username } = req.params;
-    let user = await User.findOne({ username: username }).populate("followers");
-    let currUser = await User.findOne({ username: res.locals.currUser.username }).populate("following");
-    if (user.username == currUser.username) {
-        return;
-    }
-    for (let i = user.followers.length - 1; i >= 0; i--) {
-        if (user.followers[i].username == currUser.username) {
-            user.followers.splice(i, 1); // Remove the element at index i
+    try {
+        let { id: username } = req.params;
+        let user = await User.findOne({ username: username }).populate("followers");
+        let currUser = await User.findOne({ username: res.locals.currUser.username }).populate("following");
+        if (user.username == currUser.username) {
+            return res.status(400).json({ message: "You cannot follow yourself." });;
         }
-    }
-    user.save();
-    for (let i = currUser.following.length - 1; i >= 0; i--) {
-        if (currUser.following[i].username == user.username) {
-            currUser.following.splice(i, 1); // Remove the element at index i
+        for (let i = user.followers.length - 1; i >= 0; i--) {
+            if (user.followers[i].username == currUser.username) {
+                user.followers.splice(i, 1); // Remove the element at index i
+            }
         }
+        user.save();
+        for (let i = currUser.following.length - 1; i >= 0; i--) {
+            if (currUser.following[i].username == user.username) {
+                currUser.following.splice(i, 1); // Remove the element at index i
+            }
+        }
+        currUser.save();
+        res.status(200).json({ followersCount: user.followers.length });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while trying to unfollow the user." });
     }
-    currUser.save();
-    req.flash("success", `You unfollowed ${user.username}`);
-    res.redirect(`/u/${username}`);
 }

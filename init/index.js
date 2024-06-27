@@ -6,7 +6,7 @@ const User = require("../models/user.js");
 const Review = require("../models/review.js");
 
 async function main() {
-    await mongoose.connect("database url");
+    await mongoose.connect("mongodb://127.0.0.1:27017/wander");
 }
 main().then(()=> {
     console.log("Successfully Connected to DB");
@@ -18,19 +18,21 @@ main().then(()=> {
 //     await Listing.deleteMany({});
 //     await Booking.deleteMany({});
 //     await Review.deleteMany({});
-//     initData.data = initData.data.map((obj) => ({...obj,owner : '6677454c780f72243df4fd66'}));
+//     initData.data = initData.data.map((obj) => ({...obj,category : 'Deserts',owner :'667c73af43e961e338ae78e5'
+//     }));
 //     await Listing.insertMany(initData.data);
 //     console.log("Data was initialised");
 // };
 
-const initDb = async () => {
-    let user = await User.findOne({username: "priyanshu_2384"});
-    let listings = await Listing.find({});
-    for(let i=0; i<listings.length; i++) {
-       user.posts.push(listings[i]);
-    }
-    user.save();
-}
+
+// const initDb = async () => {
+//     let user = await User.findOne({username: "priyanshu_2384"});
+//     let listings = await Listing.find({});
+//     for(let i=0; i<listings.length; i++) {
+//        user.posts.push(listings[i]);
+//     }
+//     user.save();
+// }
 
 // const initDbUser = async () => {
 //     let users = await User.find({});

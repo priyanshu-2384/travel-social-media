@@ -213,7 +213,6 @@
     </style>
 
     <body>
-
         <main>
             <header>
                 <div class="header-wrap">
@@ -225,13 +224,19 @@
                             <span class="verfied-icon"></span>
                             <div>
                                 <%if(currUser && currUser.username!=user.username) {%>
-                                    <%if(flag) {%>
-                                        <a href="/u/<%=user.username%>/unfollow"><button class="primary btn btn-dark">Unfollow</button></a>
-                                     <% } else { %>
-                                        <a href="/u/<%=user.username%>/follow"><button class="primary btn btn-dark">Follow</button></a>
-                                        <%}%>
-                                     <button class="primary btn btn-dark">Message</button>
-                                <%}%>
+                                    <% if (flag) { %>
+                                        <button id="unfollow-btn" class="primary btn btn-dark"
+                                            style="display:inline-block;">Unfollow</button>
+                                        <button id="follow-btn" class="primary btn btn-dark"
+                                            style="display:none;">Follow</button>
+                                        <% } else { %>
+                                            <button id="follow-btn" class="primary btn btn-dark"
+                                                style="display:inline-block;">Follow</button>
+                                            <button id="unfollow-btn" class="primary btn btn-dark"
+                                                style="display:none;">Unfollow</button>
+                                            <% } %>
+                                                <a href="/chat/<%=user.username%>"><button class="primary btn btn-dark">Message</button></a>
+                                                <%}%>
                             </div>
                         </div>
                         <div class="desktop-only">
@@ -240,7 +245,7 @@
                                     <li class="texts"><span>
                                             <%=user.posts.length%>
                                         </span> journeys</li>
-                                    <li class="texts"><span>
+                                    <li class="texts"><span id="followers-count">
                                             <%=user.followers.length%>
                                         </span> explorers</li>
                                     <li class="texts"><span>
@@ -282,5 +287,62 @@
                     </a>
                     <%}%>
             </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const followBtn = document.getElementById('follow-btn');
+                    const unfollowBtn = document.getElementById('unfollow-btn');
+                    const followersCountElem = document.getElementById('followers-count');
+
+                    if (followBtn) {
+                        followBtn.addEventListener('click', async function () {
+                            try {
+                                const response = await fetch(`/u/<%= user.username %>/follow`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    }
+                                });
+                                if (response.ok) {
+                                    const data = await response.json();
+                                    followersCountElem.textContent = data.followersCount;
+                                    followBtn.style.display = 'none';
+                                    if (unfollowBtn) unfollowBtn.style.display = 'inline-block';
+                                } else {
+                                    const errorData = await response.json();
+                                    alert(errorData.message || 'Failed to follow user');
+                                }
+                            } catch (err) {
+                                console.error(err);
+                                alert('Failed to follow user');
+                            }
+                        });
+                    }
+
+                    if (unfollowBtn) {
+                        unfollowBtn.addEventListener('click', async function () {
+                            try {
+                                const response = await fetch(`/u/<%= user.username %>/unfollow`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    }
+                                });
+                                if (response.ok) {
+                                    const data = await response.json();
+                                    followersCountElem.textContent = data.followersCount;
+                                    unfollowBtn.style.display = 'none';
+                                    if (followBtn) followBtn.style.display = 'inline-block';
+                                } else {
+                                    const errorData = await response.json();
+                                    alert(errorData.message || 'Failed to unfollow user');
+                                }
+                            } catch (err) {
+                                console.error(err);
+                                alert('Failed to unfollow user');
+                            }
+                        });
+                    }
+                });
+            </script>
         </main>
-</body>
+    </body>
