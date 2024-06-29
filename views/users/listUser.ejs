@@ -1,0 +1,184 @@
+<% layout("layouts/boilerplate") %>
+<style>
+    .profile-logo {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    .follower {
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 10px;
+    }
+
+    .follower:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .follower-body {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        padding: 10px;
+        min-height: 70px;
+    }
+
+    .follower-title {
+        margin-bottom: 0.2rem;
+    }
+
+    .mutual-followers {
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .follow-btn {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #d83b44;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 10px;
+        margin-left: auto;
+    }
+
+    .follow-btn:hover {
+        background-color: #d83b44;
+    }
+
+    .unfollow-btn {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #282828;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 10px;
+        margin-left: auto;
+    }
+
+    .unfollow-btn:hover {
+        background-color: #282828;
+    }
+
+    .heading {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        padding: 10px 0;
+        border-bottom: 2px solid #ccc;
+    }
+
+    .follower-body .ml-3 {
+        margin-left: 1rem;
+        flex: 1;
+    }
+
+    .username {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .username:hover {
+        text-decoration: underline;
+    }
+
+    /* Media query to hide the followers count on smaller screens */
+    @media (max-width: 768px) {
+        .mutual-followers {
+            display: none;
+        }
+    }
+</style>
+<div class="container col-12 col-sm-12 col-md-12 col-lg-8">
+    <div class="following-list">
+        <div class="heading texts"><%=data%></div>
+        <div class="row" id="interested-users-list">
+            <% users.forEach(user => { %>
+            <div class="col-12 interested-user" data-user-id="<%= user._id %>">
+                <div class="card follower secbg texts">
+                    <div class="card-body follower-body">
+                        <img class="profile-logo" src="<%= user.image.url %>" alt="profile-logo">
+                        <div class="ml-3">
+                            <h5 class="card-title follower-title"><a class="username texts" href="/u/<%=user.username%>"><%= user.username %></a></h5>
+                            <p class="card-text full-name texts"><%= user.contact %></p>
+                        </div>
+                        <p class="card-text mutual-followers texts me-3 mt-4" id="followers-count-<%=user._id%>"><b><%= user.followers.length %> followers</b></p>
+                        <div class="follow-unfollow">
+                        <% if(currUser && currUser.username != user.username) { %>
+                            <% if (currUser.following.includes(user._id)) { %>
+                                <button id="unfollow-btn-<%=user._id%>" class="unfollow-btn"
+                                    style="display:inline-block;" data-btn-user-id="<%= user._id %>" data-btn-user-username="<%= user.username %>">Unfollow</button>
+                                <button id="follow-btn-<%=user._id%>" class="follow-btn"
+                                    style="display:none;" data-btn-user-id="<%= user._id %>" data-btn-user-username="<%= user.username %>">Follow</button>
+                            <% } else { %>
+                                <button id="follow-btn-<%=user._id%>" class="follow-btn"
+                                    style="display:inline-block;" data-btn-user-id="<%= user._id %>" data-btn-user-username="<%= user.username %>">Follow</button>
+                                <button id="unfollow-btn-<%=user._id%>" class="unfollow-btn"
+                                    style="display:none;" data-btn-user-id="<%= user._id %>" data-btn-user-username="<%= user.username %>">Unfollow</button>
+                            <% } %>
+                        <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const followButtons = document.querySelectorAll('.follow-unfollow button');
+        followButtons.forEach(button => {
+            button.addEventListener('click', async function (event) {
+                const btnUserId = event.target.dataset.btnUserId;
+                const btnUserUsername = event.target.dataset.btnUserUsername;
+                const followBtn = document.getElementById(`follow-btn-${btnUserId}`);
+                const unfollowBtn = document.getElementById(`unfollow-btn-${btnUserId}`);
+                const followersCountElem = document.getElementById(`followers-count-${btnUserId}`);
+
+                try {
+                    let response;
+                    if (followBtn.style.display === 'inline-block') {
+                        // Perform follow action
+                        response = await fetch(`/u/${btnUserUsername}/follow`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        });
+                    } else {
+                        // Perform unfollow action
+                        response = await fetch(`/u/${btnUserUsername}/unfollow`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        });
+                    }
+                    if (response.ok) {
+                        const data = await response.json();
+                        followersCountElem.innerHTML = `<b>${data.followersCount} followers</b>`;
+                        followBtn.style.display = followBtn.style.display === 'none' ? 'inline-block' : 'none';
+                        unfollowBtn.style.display = unfollowBtn.style.display === 'inline-block' ? 'none' : 'inline-block';
+                    } else {
+                        const errorData = await response.json();
+                        alert(errorData.message || 'Failed to update Follow status');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Failed to update follow status');
+                }
+            });
+        });
+    });
+</script>

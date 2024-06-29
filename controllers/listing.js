@@ -30,7 +30,7 @@ module.exports.index = async (req, res) => {
             }
         }
     }
-    res.render("listings/index.ejs", { allListings,likeFlags,bookmarkFlags });
+    res.render("listings/index.ejs", { allListings,likeFlags,bookmarkFlags,category : "Recent Posts" });
 };
 
 module.exports.filter = async (req, res) => {
@@ -89,7 +89,7 @@ module.exports.filterShow = (req, res) => {
 module.exports.mostReviewed = async (req, res) => {
     let allListings = await Listing.find().populate("owner").populate("likedBy").populate("bookmarkedBy");
     allListings.sort((a, b) => {
-        return b.reviews.length - a.reviews.length;
+        return (a.reviews.length+a.likedBy.length+a.bookmarkedBy.length) - (b.reviews.length+b.likedBy.length+b.bookmarkedBy.length);
     });
     
     let likeFlags = [];
@@ -119,7 +119,7 @@ module.exports.mostReviewed = async (req, res) => {
         }
     }
 
-    res.render("listings/index.ejs", { allListings, likeFlags, bookmarkFlags});
+    res.render("listings/index.ejs", { allListings, likeFlags, bookmarkFlags, category : "Trending"});
 };
 
 module.exports.showListings = async (req, res) => {
@@ -216,11 +216,11 @@ module.exports.deleteListing = async (req, res) => {
 
 
 module.exports.search = async (req, res) => {
-    let country = req.body.country;
+    let location = req.body.location;
     let listings = await Listing.find({}).populate("owner").populate("likedBy").populate("bookmarkedBy");
     let allListings = []
     for (let l of listings) {
-        if (l.country == country) {
+        if (l.location.toLowerCase() == location.toLowerCase()) {
             allListings.push(l);
         }
     }
@@ -251,7 +251,7 @@ module.exports.search = async (req, res) => {
         }
     }
 
-    res.render("listings/index.ejs", { allListings, likeFlags, bookmarkFlags});
+    res.render("listings/index.ejs", { allListings, likeFlags, bookmarkFlags, category : `Searched for ${location}`});
 }
 
 module.exports.like = async (req, res) => {
@@ -342,4 +342,69 @@ module.exports.unbookmark = async (req, res) => {
         res.status(500).json({ message: "An error occurred while trying to unbookmark the post" });
     }
 }
+
+module.exports.sortByCategory = async (req,res) => {
+    let {id} = req.params;
+    let allListings = await Listing.find({category : id}).populate("owner").populate("likedBy").populate("bookmarkedBy");
+    let likeFlags = [];
+    let bookmarkFlags = [];
+    for (let i = 0; i < allListings.length; i++) {
+        likeFlags[i] = false;
+        bookmarkFlags[i] = false;
+    }
+    if (typeof res.locals.currUser !== 'undefined') {
+        let currUser = res.locals.currUser;
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].likedBy.length; j++) {
+                if (allListings[i].likedBy[j].username == currUser.username) {
+                    likeFlags[i] = true;
+                    break;
+                }
+            }
+        }
+
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].bookmarkedBy.length; j++) {
+                if (allListings[i].bookmarkedBy[j].username == currUser.username) {
+                    bookmarkFlags[i] = true;
+                    break;
+                }
+            }
+        }
+    }
+    res.render("listings/index.ejs", { allListings,likeFlags,bookmarkFlags,category : id});
+}
+
+
+module.exports.myBookmarks = async (req, res) => {
+    let currUser = await User.findOne({username : res.locals.currUser.username});
+    let allListings = await Listing.find({ bookmarkedBy: { $in: [currUser._id] } }).populate("owner").populate("likedBy").populate("bookmarkedBy");
+    let likeFlags = [];
+    let bookmarkFlags = [];
+    for (let i = 0; i < allListings.length; i++) {
+        likeFlags[i] = false;
+        bookmarkFlags[i] = false;
+    }
+    if (typeof res.locals.currUser !== 'undefined') {
+        let currUser = res.locals.currUser;
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].likedBy.length; j++) {
+                if (allListings[i].likedBy[j].username == currUser.username) {
+                    likeFlags[i] = true;
+                    break;
+                }
+            }
+        }
+
+        for (let i = 0; i < allListings.length; i++) {
+            for (let j = 0; j < allListings[i].bookmarkedBy.length; j++) {
+                if (allListings[i].bookmarkedBy[j].username == currUser.username) {
+                    bookmarkFlags[i] = true;
+                    break;
+                }
+            }
+        }
+    }
+    res.render("listings/index.ejs", { allListings,likeFlags,bookmarkFlags,category : "Your Bookmarks" });
+};
 

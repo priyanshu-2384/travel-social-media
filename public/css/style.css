@@ -1,12 +1,12 @@
     :root {
-        --pink: #fe424d;
+        --pink: #7F27FF;
         --bg: #ffffff;
         --text: #282828;
         --sec: #ffff;
     }
 
     .darkmd {
-        --pink: #fe424d;
+        --pink: #7F27FF;
         --bg: #282828;
         --text: #ffffff;
         --sec: #31363F;
@@ -48,6 +48,9 @@
     .texts {
         color: var(--text) !important;
     }
+    .texts i {
+        color: var(--text);
+    }
 
     .container {
         flex: 1;
@@ -60,7 +63,7 @@
     }
 
     .fa-compass {
-        color: #fe424d;
+        color: #7F27FF;
         font-size: 2rem;
     }
 
@@ -133,7 +136,7 @@
 
     .add-btn,
     .edit-btn {
-        background-color: #fe424d !important;
+        background-color: #7F27FF !important;
     }
 
     .show-img {

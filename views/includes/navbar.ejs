@@ -1,13 +1,13 @@
 <style>
     :root {
-        --pink: #fe424d;
+        --pink: #7F27FF;
         --bg: #ffff;
         --text: #282828;
         --sec: #ffffff;
     }
 
     .darkmd {
-        --pink: #fe424d;
+        --pink: #7F27FF;
         --bg: #282828;
         --text: #ffffff;
         --sec: #31363F;
@@ -29,6 +29,9 @@
 
     .texts {
         color: var(--text) !important;
+    }
+    .texts i{
+        color: var(--text);
     }
 
     .btn-search {
@@ -156,88 +159,102 @@
         display: flex;
         flex-direction: row;
     }
+
+    .dropdown-menu .dropdown-item {
+        color: var(--text);
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: var(--pink);
+        color: var(--bg);
+    }
+
+    .dropdown-toggle::after {
+        margin-left: 0.5rem;
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary secbg">
     <div class="container-fluid secbg">
-        <button class="navbar-toggler texts navbtn me-3" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
-            aria-label="Toggle navigation">
+        <button class="navbar-toggler texts navbtn me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand " href="/listings"><i class="fa-solid fa-compass"></i></a>
-        <div class="bright-dark-mode me-2">
-            <button class="dark" id="mode"><i class="fa-solid fa-moon" style="font-size: larger;"></i></button>
+        <div class="navbar-nav me-4 mt-2">
+            <h4 class="texts">VoyaBook</h4>
         </div>
         <div class="navbar-brand-profile ms-auto texts">
             <% if(!currUser) { %>
                 <div class="navbar-brand-signup-login">
                     <div class="navbar-nav">
-                        <a class="nav-link texts" href="/signup"><b>Sign up</b></a>
+                        <a class="nav-link texts" href="/signup">Sign up</a>
                     </div>
                     <div class="navbar-nav">
-                        <a class="nav-link texts" href="/login"><b>Log in</b></a>
+                        <a class="nav-link texts" href="/login">Log in</a>
                     </div>
                 </div>
-                <% } else { %>
-                    <button class="nav-link texts" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar"
-                        aria-controls="sidebar">
-                        <%=currUser.username%>
-                            <img src="<%=currUser.image.url%>" style="object-fit: cover;" alt="Profile Image"
-                                class="profile-img-navbar ms-3">
-                    </button>
-                    <% } %>
+            <% } else { %>
+                <button class="nav-link texts" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                    <img src="<%=currUser.image.url%>" style="object-fit: cover;" alt="Profile Image" class="profile-img-navbar ms-3">
+                </button>
+            <% } %>
         </div>
         <div class="collapse navbar-collapse navColor texts" id="navbarNavAltMarkup">
             <% if(currUser && currUser.username==="priyanshu_2384" ) { %>
                 <div class="navbar-nav">
                     <h5 class="navbar-nav texts">Admin Login</h5>
                 </div>
+            <% } %>
+            <div class="bright-dark-mode me-4 mt-3 ms-3">
+                <button class="dark" id="mode"><i class="fa-solid fa-moon" style="font-size: larger;"></i></button>
+            </div>
+            <div class="navbar-nav me-4">
+                <a class="nav-link texts" href="/listings">Home Page</a>
+            </div>
+            <div class="navbar-nav me-4">
+                <a class="nav-link texts" href="/listings/new">Post <i class="fa-solid fa-circle-plus"></i></a>
+            </div>
+            <div class="navbar-nav me-4">
+                <a class="nav-link texts" href="/plan">Connect & Plan <i class="fa-solid fa-handshake"></i></a>
+            </div>
+            <div class="navbar-nav dropdown me-4">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Categories
+                </button>
+                <ul class="dropdown-menu secbg">
+                    <li><a class="dropdown-item texts" href="/listings/categories/Mountains">Mountains</a></li>
+                    <li><a class="dropdown-item texts" href="/listings/categories/Beaches and Coastal Areas">Beaches and Coastal Areas</a></li>
+                    <li><a class="dropdown-item texts" href="/listings/categories/Forests and Jungles">Forests and Jungles</a></li>
+                    <li><a class="dropdown-item texts" href="/listings/categories/Deserts">Deserts</a></li>
+                    <li><a class="dropdown-item texts" href="/listings/categories/Historical and Cultural Sites">Historical and Cultural Sites</a></li>
+                    <li><a class="dropdown-item texts" href="/listings/categories/Urban Destinations">Urban Destinations</a></li>
+                    <li><a class="dropdown-item texts" href="/listings/categories/Countryside and Rural Areas">Countryside and Rural Areas</a></li>
+                    <li><a class="dropdown-item texts" href="/listings/categories/Islands">Islands</a></li>
+                    <li><a class="dropdown-item texts" href="/listings/categories/Lakes and Rivers">Lakes and Rivers</a></li>
+                    <li><a class="dropdown-item texts" href="/listings/categories/Special Interest and Seasonal Attractions">Special Interest and Seasonal Attractions</a></li>
+                </ul>
+            </div>
+            <div class="navbar-nav me-4">
+                <a class="nav-link texts" href="/listings/topRated">Trending <i class="fa-solid fa-fire"></i></a>
+            </div>
+            <div class="navbar-nav ms-auto d-flex align-items-center">
+                <% if(!currUser) { %>
+                    <div class="navbar-nav sidebar-profile">
+                        <a class="nav-link texts" href="/signup">Sign up</a>
+                    </div>
+                    <div class="navbar-nav sidebar-profile">
+                        <a class="nav-link texts" href="/login">Log in</a>
+                    </div>
+                <% } else { %>
+                    <div class="navbar-nav sidebar-profile">
+                        <button class="nav-link texts" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                            <%=currUser.username%>
+                            <img src="<%=currUser.image.url%>" style="object-fit: cover;" alt="Profile Image" class="profile-img-navbar ms-3">
+                        </button>
+                    </div>
                 <% } %>
-                    <div class="navbar-nav">
-                        <a class="nav-link texts" href="/listings">Explore</a>
-                    </div>
-                    <div class="navbar-nav">
-                        <a class="nav-link texts" href="/listings/new">Create <i class="fa-solid fa-circle-plus"></i></a>
-                    </div>
-                    <div class="navbar-nav">
-                        <a class="nav-link texts" href="/plan">Connect & Plan <i class="fa-solid fa-handshake"></i></a>
-                    </div>
-
-
-                    <% if(currentPath=="/listings" || currentPath=="/listings/filter/byPrice" ||
-                        currentPath=="/listings/topRated" ) { %>
-                        <div class="navbar-nav ms-auto ">
-                            <form class="d-flex" role="search" method="POST" action="/listings/city">
-                                <input class="form-control search-inp me-2" type="search" name="country"
-                                    placeholder="Search country" required>
-                                <button class="btn btn-search texts" type="submit"> <i
-                                        class="fa-solid fa-magnifying-glass texts"></i>Search</button>
-                            </form>
-                        </div>
-                        <% } %>
-                            <div class="navbar-nav ms-auto d-flex align-items-center">
-                                <% if(!currUser) { %>
-                                    <div class="navbar-nav sidebar-profile">
-                                        <a class="nav-link texts" href="/signup"><b>Sign up</b></a>
-                                    </div>
-                                    <div class="navbar-nav sidebar-profile">
-                                        <a class="nav-link texts" href="/login"><b>Log in</b></a>
-                                    </div>
-                                    <% } else { %>
-                                        <div class="navbar-nav sidebar-profile">
-                                            <button class="nav-link texts" type="button" data-bs-toggle="offcanvas"
-                                                data-bs-target="#sidebar" aria-controls="sidebar">
-                                                <%=currUser.username%>
-                                                    <img src="<%=currUser.image.url%>" style="object-fit: cover;"
-                                                        alt="Profile Image" class="profile-img-navbar ms-3">
-
-                                            </button>
-                                        </div>
-                                        <% } %>
-
-                            </div>
+            </div>
         </div>
+    </div>
 </nav>
 
 <% if(currUser) { %>
@@ -249,8 +266,7 @@
             </div>
             <div class="profile-head secbg">
                 <a href="/profile">
-                    <img src="<%=currUser.image.url%>" style="object-fit: cover;" alt="Profile Image"
-                        class="profile-img mb-3">
+                    <img src="<%=currUser.image.url%>" style="object-fit: cover;" alt="Profile Image" class="profile-img mb-3">
                 </a>
                 <h5 id="sidebarLabel" class="texts">
                     <%= currUser.username %>
@@ -260,26 +276,23 @@
         <div class="offcanvas-body secbg">
             <ul class="list-group secbg">
                 <li class="list-group-item secbg">
-                    <i class="fas fa-user me-2 texts"></i>
-                    <a class="nav-link texts" href="/profile">Profile</a>
+                    <i class="fas fa-user me-2 "></i>
+                    <a class="nav-link texts" href="/u/<%=currUser.username%>">View Profile</a>
                 </li>
                 <li class="list-group-item secbg">
-                    <i class="fa-solid fa-house me-2 texts"></i>
-                    <a class="nav-link texts" href="/myBookings">My Bookings</a>
+                    <i class="fas fa-user me-2"></i>
+                    <a class="nav-link texts" href="/profile">Edit Profile</a>
                 </li>
                 <li class="list-group-item secbg">
-                    <i class="fas fa-question-circle me-2 texts"></i>
-                    <a class="nav-link texts" href="/help">Help</a>
+                    <i class="fa-solid fa-house me-2 "></i>
+                    <a class="nav-link texts" href="/listings/myBookmarks">My Bookmarks</a>
                 </li>
+                
                 <li class="list-group-item secbg">
-                    <i class="fas fa-envelope me-2 texts"></i>
-                    <a class="nav-link texts" href="/contact">Contact</a>
-                </li>
-                <li class="list-group-item secbg">
-                    <i class="fas fa-sign-out-alt me-2 texts"></i>
+                    <i class="fas fa-sign-out-alt me-2"></i>
                     <a class="nav-link texts" href="/logout">Logout</a>
                 </li>
             </ul>
         </div>
     </div>
-    <% } %>
+<% } %>

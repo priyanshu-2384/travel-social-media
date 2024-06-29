@@ -133,3 +133,16 @@ module.exports.userUnfollow = async (req, res) => {
         res.status(500).json({ message: "An error occurred while trying to unfollow the user." });
     }
 }
+
+module.exports.getFollowers = async (req,res) => {
+    let { id: username } = req.params;
+    let user = await User.findOne({ username: username }).populate("followers");
+    res.render("users/listUser.ejs", {data : "Followers", users : user.followers});
+}
+
+module.exports.getFollowing = async (req,res) => {
+    let { id: username } = req.params;
+    let user = await User.findOne({ username: username }).populate("following");
+    res.render("users/listUser.ejs", {data : "Following", users : user.following});
+}
+

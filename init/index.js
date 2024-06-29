@@ -18,21 +18,21 @@ main().then(()=> {
 //     await Listing.deleteMany({});
 //     await Booking.deleteMany({});
 //     await Review.deleteMany({});
-//     initData.data = initData.data.map((obj) => ({...obj,category : 'Deserts',owner :'667c73af43e961e338ae78e5'
+//     initData.data = initData.data.map((obj) => ({...obj,
 //     }));
 //     await Listing.insertMany(initData.data);
 //     console.log("Data was initialised");
 // };
 
 
-// const initDb = async () => {
-//     let user = await User.findOne({username: "priyanshu_2384"});
-//     let listings = await Listing.find({});
-//     for(let i=0; i<listings.length; i++) {
-//        user.posts.push(listings[i]);
-//     }
-//     user.save();
-// }
+const initDb = async () => {
+    let user = await User.findOne({username: "priyanshu_2384"});
+    let listings = await Listing.find({});
+    for(let i=0; i<listings.length; i++) {
+       user.posts.push(listings[i]);
+    }
+    user.save();
+}
 
 // const initDbUser = async () => {
 //     let users = await User.find({});

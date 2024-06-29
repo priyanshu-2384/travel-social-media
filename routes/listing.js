@@ -11,7 +11,6 @@ const upload = multer({storage});   //multer will save the uploads , which are d
 
 //Index Route 
 router.get("/", wrapAsync(listingController.index));
-
 //Get Route Top Rated
 router.get("/topRated", wrapAsync(listingController.mostReviewed));
 
@@ -21,10 +20,12 @@ router.post("/",upload.array('images',5),validateListing, wrapAsync(listingContr
 
 //search route
 router.post("/city",listingController.search);
-
+router.get("/myBookmarks",wrapAsync(listingController.myBookmarks));
 //filter by price
 router.get("/filter", listingController.filterShow);
 router.post("/filter/byPrice",wrapAsync(listingController.filter));
+
+router.get("/categories/:id",wrapAsync(listingController.sortByCategory));
 
 //Show Route,.... Always put this id route below as if not done, the routes which will be below this and have same url like : /listings/new here new will be intrepreted as id
 router.get("/:id", wrapAsync(listingController.showListings));

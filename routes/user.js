@@ -38,6 +38,8 @@ router.post("/u/:id/follow",isLoggedIn,wrapAsync(userController.userFollow));
 //Unfollow post request
 router.post("/u/:id/unfollow",isLoggedIn,wrapAsync(userController.userUnfollow));
 
+router.get("/u/:id/followers",isLoggedIn,wrapAsync(userController.getFollowers));
 
+router.get("/u/:id/following",isLoggedIn,wrapAsync(userController.getFollowing));
 
 module.exports = router;

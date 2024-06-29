@@ -89,10 +89,32 @@
             color: white;
             font-size: 40px;
         }
+
+        .full-screen-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .full-screen-image {
+        max-width: 90%;
+        max-height: 90%;
+    }
+
+    .full-screen-overlay.active {
+        display: flex;
+    }
     </style>
     
     <div class="row show-page">
-        <div class="col-10 col-sm-12 col-md-12 col-lg-8">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-8">
             <a href="/u/<%= listing.owner.username %>" class="card-header-link">
                 <div class="card-body card-user-title">
                     <img src="<%= listing.owner.image.url %>" class="user-image-card-title">
@@ -206,14 +228,11 @@
                             <%= listing.owner.username %>
                         </i></p>
                     <p class="card-text texts">
-                        <%= listing.description %>
+                       <b>Description : </b> <%= listing.description %>
                     </p>
-                    <p class="card-text texts"><%= listing.category %> </p>
+                    <p class="card-text texts"><b>Category : </b><%= listing.category %> </p>
                     <p class="card-text texts">
-                        <%= listing.location %>
-                    </p>
-                    <p class="card-text texts">
-                        <%= listing.country %>
+                        <b>Location : </b><%= listing.location %>, <%= listing.country %>
                     </p>
                 </div>
                 <br>
@@ -228,10 +247,15 @@
                     <% } %>
                 </div>
 
+                <!-- Full-Screen Image Overlay -->
+        <div id="fullScreenOverlay" class="full-screen-overlay">
+            <img id="fullScreenImage" class="full-screen-image" src="" alt="Full screen image">
+        </div>
+
             <div class="mt-3 mb-3">
                 <% if(currUser) { %>
                     <hr class="texts">
-                    <h4 class="texts">Leave a Review</h4>
+                    <h4 class="texts">Discuss</h4>
                     <form action="/listings/<%= listing._id %>/reviews" method="POST">
                         <div class="mb-3 mt-3">
                             <label for="comment" class="form-label texts">Comments</label>
@@ -243,7 +267,7 @@
                 <% } %>
                 <hr class="texts">
     
-                <p class="texts"><b>All Reviews</b></p>
+                <p class="texts"><b>All Discussions</b></p>
                 <div class="row">
                     <% for(review of listing.reviews) { %>
                         <div class="card mb-3 ms-2 secbg">
@@ -324,6 +348,35 @@
     </div>
     
     <script>
+        // Get the elements
+    const fullScreenOverlay = document.getElementById('fullScreenOverlay');
+    const fullScreenImage = document.getElementById('fullScreenImage');
+
+    // Function to show the full-screen image
+    function showFullScreenImage(src) {
+        fullScreenImage.src = src;
+        fullScreenOverlay.classList.add('active');
+    }
+
+    // Function to hide the full-screen image
+    function hideFullScreenImage() {
+        fullScreenOverlay.classList.remove('active');
+        fullScreenImage.src = '';
+    }
+
+    // Add event listeners to images with class 'show-img'
+    document.querySelectorAll('.show-img').forEach(img => {
+        img.addEventListener('click', () => {
+            showFullScreenImage(img.src);
+        });
+    });
+
+    // Add event listener to the overlay to hide the image when clicking outside
+    fullScreenOverlay.addEventListener('click', (e) => {
+        if (e.target !== fullScreenImage) {
+            hideFullScreenImage();
+        }
+    });
     document.querySelectorAll('.see-replies').forEach(button => {
         button.addEventListener('click', function () {
             const replies = button.closest('.card').querySelector('.replies');
