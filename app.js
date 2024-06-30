@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wander";//
+const MONGO_URL = process.env.ATLASDB_URL;
 const dBUrl = process.env.ATLASDB_URL;
 
 async function main() {

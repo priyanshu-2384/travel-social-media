@@ -17,7 +17,7 @@ module.exports.listingSchema = Joi.object({
             "Islands", 
             "Lakes and Rivers", 
             "Special Interest and Seasonal Attractions"
-        ).required(),
+        ),
         image: Joi.string().allow("", null)
     }).required()
 });

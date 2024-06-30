@@ -3,9 +3,9 @@
 <div class="row texts">
     <div class="col-10 col-md-8 offset-1 offset-md-2 texts">
         <br><br>
-        <h2 class="texts">Edit this Listing</h2>
+        <h2 class="texts">Edit this Post</h2>
         <br>
-        <form method="POST" action="/listings/<%=listing._id%>?_method=PUT" enctype="multipart/form-data">
+        <form method="POST" action="/listings/<%=listing._id%>?_method=PUT">
             <div class="mb-3 texts">
                 <label for="title" class="form-label texts">Title</label>
                 <input value="<%=listing.title%>" name="listing[title]" type="text" class="form-control" required>
@@ -21,21 +21,6 @@
                     <label for="country" class="form-label texts">Country</label>
                     <input value="<%=listing.country%>" name="listing[country]" type="text" class="form-control" required>
                 </div>
-
-                <div class="mb-3 col-md-4 texts">
-                    <label for="price" class="form-label texts">Price</label>
-                    <input value="<%=listing.price%>" name="listing[price]" type="listing[number]" class="form-control" required>
-                </div>
-            </div>
-
-            <div class="mb-3 texts">
-                Original Listing Image <br/>
-                <img src="<%=originalUrl%>" width="250px" height="200px" style="margin-top: 15px; margin-bottom: 10px; border-radius: 10px;"/>
-            </div>
-
-            <div class="mb-3 texts">
-                <label for="image" class="form-label texts">Upload New Image</label>
-                <input name="listing[image]" type="file" class="form-control">
             </div>
 
             <div class="mb-3 texts">

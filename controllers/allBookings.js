@@ -36,8 +36,10 @@ module.exports.planSearch = async (req, res) => {
 
 module.exports.planPage = async (req, res) => {
     let { city, month } = req.body;
+    let c = city.toLowerCase();
+    let m = month.toLowerCase();
     try {
-        let plan = await Booking.findOne({ city: city, month: month }).populate('intrestedUsers').populate('owner').populate({ path: "reviews", populate: [{ path: "author"},{ path : "replies", populate : {path : "author"}}]});
+        let plan = await Booking.findOne({ city: c, month: m }).populate('intrestedUsers').populate('owner').populate({ path: "reviews", populate: [{ path: "author"},{ path : "replies", populate : {path : "author"}}]});
         if (plan) {
             res.redirect(`/plan/${plan._id}`);
         } else {
@@ -57,12 +59,14 @@ module.exports.createPlan = async (req, res) => {
     try {
         let currUser = await User.findOne({ username: res.locals.currUser.username });
         let newPlan = new Booking();
-        newPlan.month = month;
-        newPlan.city = city;
+        newPlan.month = month.toLowerCase();
+        newPlan.city = city.toLowerCase();
         newPlan.owner = currUser;
         newPlan.image = { url: req.file.path, filename: req.file.filename };
         newPlan.intrestedUsers = [currUser._id];
-        let existingPlan = await Booking.findOne({ city: city, month: month }).populate('intrestedUsers').populate('owner').populate({ path: "reviews", populate: [{ path: "author"},{ path : "replies", populate : {path : "author"}}]});
+        let c = city.toLowerCase();
+        let m = month.toLowerCase();
+        let existingPlan = await Booking.findOne({ city: c, month: m }).populate('intrestedUsers').populate('owner').populate({ path: "reviews", populate: [{ path: "author"},{ path : "replies", populate : {path : "author"}}]});
         if (existingPlan) {
             req.flash("success", "Plan already exists, join the explorers");
             res.redirect(`/plan/${existingPlan._id}`);

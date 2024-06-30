@@ -26,7 +26,7 @@ const sampleListings = [
     likedBy: [],
     bookmarkedBy: [],
     date: new Date('2024-06-28T10:00:00'),
-    owner :  '66808400dbb80746fb96aecd',
+    owner :  "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Maldives Paradise",
@@ -54,7 +54,7 @@ const sampleListings = [
   likedBy: [],
   bookmarkedBy: [],
   date: new Date('2024-06-28T10:00:00'),
-  owner : '66808374dbb80746fb96ae22',
+  owner : "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Amazon Rainforest Expedition",
@@ -82,7 +82,7 @@ const sampleListings = [
   likedBy: [],
   bookmarkedBy: [],
   date: new Date('2024-06-28T10:00:00'),
-  owner : '66808374dbb80746fb96ae22',
+  owner : "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Bondi Beach Escape",
@@ -110,7 +110,7 @@ const sampleListings = [
   likedBy: [],
   bookmarkedBy: [],
   date: new Date('2024-06-28T10:00:00'),
-  owner : '66808374dbb80746fb96ae22',
+  owner : "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Wadi Rum Exploration",
@@ -138,7 +138,7 @@ const sampleListings = [
   likedBy: [],
   bookmarkedBy: [],
   date: new Date('2024-06-28T10:00:00'),
-  owner : '6680833adbb80746fb96adb5',
+  owner : "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Machu Picchu Exploration",
@@ -166,7 +166,7 @@ const sampleListings = [
   likedBy: [],
   bookmarkedBy: [],
   date: new Date('2024-06-28T10:00:00'),
-  owner : '66808374dbb80746fb96ae22',
+  owner : "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Taj Mahal Visit",
@@ -194,7 +194,7 @@ const sampleListings = [
   likedBy: [],
   bookmarkedBy: [],
   date: new Date('2024-06-28T10:00:00'),
-  owner :  '66808400dbb80746fb96aecd',
+  owner :  "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Tokyo City Lights",
@@ -222,7 +222,7 @@ const sampleListings = [
   likedBy: [],
   bookmarkedBy: [],
   date: new Date('2024-06-28T10:00:00'),
-  owner : '66808400dbb80746fb96aecd',
+  owner : "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Santorini Island Adventure",
@@ -250,7 +250,7 @@ const sampleListings = [
   likedBy: [],
   bookmarkedBy: [],
   date: new Date('2024-06-28T10:00:00'),
-  owner : '66808374dbb80746fb96ae22',
+  owner : "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Lake Tahoe Getaway",
@@ -278,7 +278,7 @@ const sampleListings = [
   likedBy: [],
   bookmarkedBy: [],
   date: new Date('2024-06-28T10:00:00'),
-  owner :'66808374dbb80746fb96ae22',
+  owner :"667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Yosemite National Park",
@@ -303,7 +303,7 @@ const sampleListings = [
   location: "California",
   country: "USA",
   date: new Date('2024-06-28T10:00:00'),
-  owner :  '66808400dbb80746fb96aecd',
+  owner :  "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Great Barrier Reef",
@@ -328,7 +328,7 @@ const sampleListings = [
   location: "Queensland",
   country: "Australia",
   date: new Date('2024-06-28T10:00:00'),
-  owner :'66808374dbb80746fb96ae22',
+  owner :"667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Cinque Terre",
@@ -353,7 +353,7 @@ const sampleListings = [
   location: "Liguria",
   country: "Italy",
   date: new Date('2024-06-28T10:00:00'),
-  owner : '6680833adbb80746fb96adb5'
+  owner : "667ba84ee6e5a7f6f8c89f82"
 },
 {
   title: "New York City Experience",
@@ -381,7 +381,7 @@ const sampleListings = [
   likedBy: [],
   bookmarkedBy: [],
   date: new Date('2024-06-28T10:00:00'),
-  owner : '6680833adbb80746fb96adb5',
+  owner : "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Bali Island Escape",
@@ -409,7 +409,7 @@ const sampleListings = [
   likedBy: [],
   bookmarkedBy: [],
   date: new Date('2024-06-28T10:00:00'),
-  owner :  '66808400dbb80746fb96aecd',
+  owner :  "667ba84ee6e5a7f6f8c89f82",
 },
 {
   title: "Cherry Blossom Festival",
@@ -436,7 +436,7 @@ const sampleListings = [
   reviews: [],
   likedBy: [],
   bookmarkedBy: [],
-  owner : '66808374dbb80746fb96ae22',
+  owner : "667ba84ee6e5a7f6f8c89f82",
   date: new Date('2024-06-28T10:00:00')
 }
 ];

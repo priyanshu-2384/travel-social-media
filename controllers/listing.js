@@ -176,27 +176,17 @@ module.exports.editListingForm = async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
     if (!listing) {
-        req.flash("error", "Listing you requested for does not exist!");
+        req.flash("error", "Post you requested for does not exist!");
         res.redirect("/listings");
     }
-    let originalUrl = listing.image.url;
-    originalUrl = originalUrl.replace("/upload", "/upload/w_250");
-    res.render("listings/edit.ejs", { listing, originalUrl });
+    res.render("listings/edit.ejs", { listing});
 };
 
 module.exports.editListing = async (req, res) => {
     let { id } = req.params;
     let listing = req.body.listing;
     let x = await Listing.findByIdAndUpdate(id, { ...listing }, { new: true });
-
-    if (typeof req.file !== "undefined") {
-        let url = req.file.path;
-        let filename = req.file.filename;
-        x.image = { url, filename };
-        console.log(x);
-        await x.save();
-    }
-    req.flash("success", "Listing Updated!");
+    req.flash("success", "Post Updated!");
     res.redirect(`/listings/${id}`);
 };
 
@@ -210,7 +200,7 @@ module.exports.deleteListing = async (req, res) => {
     user.posts = user.posts.filter(post => post._id.toString() !== listing._id.toString());
     await user.save();
 
-    req.flash("success", "Listing Deleted!");
+    req.flash("success", "Post Deleted!");
     res.redirect("/listings");
 };
 
