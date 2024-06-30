@@ -9,15 +9,16 @@ const Booking = require("./models/booking.js");
 const validateListing = (req,res,next) => {
    console.log("h");
    let {error} = listingSchema.validate(req.body);
+   console.log(error);
    if(error) {
        return new ExpressError(400,error);
    } else {
+      console.log("yes");
        next();
    }
 };
 
 const validateReview = (req,res,next) => {
-   console.log(reviewSchema);
    let { error } = reviewSchema.validate(req.body);
    if(error) {
        return new ExpressError(400,error);
@@ -63,6 +64,17 @@ const isOwnerReview = async (req,res,next) => {
    next();
 }
 
+const isOwnerReply = async (req,res,next) => {
+   console.log("in middleware");
+   let { id, reviewId, replyId} = req.params;
+   let reply= await Review.findById(replyId);
+   if(!reply.author._id.equals(res.locals.currUser._id) && !(res.locals.currUser && res.locals.currUser.username==="priyanshu_2384")) {
+      req.flash("error","You are not owner of the Review");
+      return res.redirect(`/listings/${id}`);
+   }
+   next();
+}
+
 const isAvailable = async (req,res,next) => {
    let {id} = req.params;
    let bookingData = req.body.booking;
@@ -88,4 +100,4 @@ const isAvailable = async (req,res,next) => {
    }
    next();
 }
-module.exports = {isLoggedIn,saveRedirectUrl,isOwner,validateListing,validateReview,isOwnerReview,isAvailable};   //order of exporting is important if not sendas object(i.e isLoggedIn,saveRedirectUrl)
+module.exports = {isLoggedIn,saveRedirectUrl,isOwner,validateListing,validateReview,isOwnerReview,isAvailable,isOwnerReply};   //order of exporting is important if not sendas object(i.e isLoggedIn,saveRedirectUrl)

@@ -1,43 +1,280 @@
 <% layout("layouts/boilerplate") %>
+    <style>
+        .card-user-title {
+            display: flex;
+            flex-direction: row;
+            padding-left: 0;
+        }
+
+        .user-image-card-title {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 0.6rem;
+            object-fit: cover;
+        }
+
+        .like-unlike-btn-listing,
+        button {
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            padding-left: 0;
+            padding-bottom: 0.7rem;
+            outline: none;
+        }
+
+        .bookmark-listing {
+            display: flex;
+            flex-direction: row;
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            padding-left: 0;
+            padding-bottom: 0.7rem;
+            outline: none;
+            margin-left: auto;
+        }
+
+        .liked-icon-listing {
+            color: rgb(254, 66, 77) !important;
+            font-size: 40px;
+        }
+
+        .unliked-icon-listing {
+            color: white;
+            font-size: 40px;
+        }
+
+        .bookmark-like-listing {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .bookmarked-icon-listing {
+            color: white;
+            font-size: 40px;
+        }
+
+        .unbookmarked-icon-listing {
+            color: white;
+            font-size: 40px;
+        }
+
+        @media only screen and (max-width: 735px) {
+            .displayF {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.5;
+            margin-top: 1rem;
+        }
+
+        .texts {
+            font-family: 'Arial', sans-serif;
+            color: #444;
+        }
+    </style>
+
     <div>
         <br>
-        <div class="head">
+        <div class="navbar-nav " style="display: flex; flex-direction: column; align-items: center;">
+            <form class="d-flex col-10 col-md-6 " role="search" method="POST" action="/listings/city">
+                <input class="form-control search-inp me-2" type="search" name="location" placeholder="Search city"
+                    required>
+                <button class="btn btn-search texts" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+            </form>
+        </div>
+        <div class="head mt-4">
             <div>
-                <h2 class=" texts">All Listings</h2>
-            </div>
-            <div class="ms-auto">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false" style="background-color: rgb(254, 66, 77);">
-                        Filter
-                    </button>
-                    <ul class="dropdown-menu secbg">
-                        <li><a class="dropdown-item by-price texts secbg" href="/listings/filter" style="display: flex; align-items: center; justify-content: center;"><p style="margin: 0;">By Price</p></a></li>
-                        <form method="GET" action="/listings/topRated" class="by-price dropdown-item secbg" style="display: flex; align-items: center; justify-content: center;">
-                            <button class="btn btn-light texts secbg" style="border: none; background-color: transparent !important;">Top Rated</button>
-                        </form>
-                    </ul>
-                </div>
+                <h2 class="texts">
+                    <%=category%>
+                </h2>
             </div>
         </div>
 
-        <div class="row row-cols-lg-3 row row-cols-md-2 row row-cols-sm-1 mt-3">
-            <% for(listing of allListings) { %>
-                <a href="/listings/<%=listing._id%>" class="listing-link">
+        <div class="row row-cols-lg-3 row row-cols-md-2 row row-cols-sm-1 mt-3 displayF">
+            <% for(let i=allListings.length-1; i>=0; i--) { %>
+                <% let listing=allListings[i];%>
                     <div class="card col listing-card bg">
-                        <img src="<%=listing.image.url%>" class="card-img-top img-hover bg" alt="listing_image"
-                            style="width: 20rem; height: 20rem;">
+                        <a href="/u/<%= listing.owner.username %>" class="card-header-link">
+                            <div class="card-body card-user-title">
+                                <img src="<%= listing.owner.image.url %>" class="user-image-card-title">
+                                <div>
+                                    <h5 class="texts mt-1">
+                                        <%= listing.owner.username %>
+                                    </h5>
+                                    <p class="card-text texts"><i>
+                                            <%= listing.date.toString().split(" ").slice(1, 4).join(" -") %>
+                                        </i></p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="/listings/<%= listing._id %>" class="listing-link">
+                            <img src="<%= listing.image.list[0].url %>" class="card-img-top img-hover bg"
+                                alt="listing_image" style="width: 20rem; height: 20rem;">
+                        </a>
                         <div class="card-body">
-                            <p class="card-text texts">
-                                <b>
-                                    <%=listing.title%>
-                                </b><br>
-                                &#8377; <%=listing.price.toLocaleString("en-IN")%> /night
-                            </p>
+                            <div class="bookmark-like-listing">
+                                <div class="like-unlike-btn-listing">
+                                    <% if(likeFlags[i]) { %>
+                                        <button class="texts" id="like-btn-listing-<%= listing._id %>" style="display:inline-block; "
+                                            data-listing-id="<%= listing._id %>">
+                                            <i class="fa-solid fa-heart liked-icon-listing "></i>
+                                        </button>
+                                        <button class="texts" id="unlike-btn-listing-<%= listing._id %>" style="display:none;"
+                                            data-listing-id="<%= listing._id %>">
+                                            <i class="fa-regular fa-heart unliked-icon-listing "></i>
+                                        </button>
+                                        <% } else { %>
+                                            <button class="texts" id="like-btn-listing-<%= listing._id %>" style="display:none;"
+                                                data-listing-id="<%= listing._id %>">
+                                                <i class="fa-solid fa-heart liked-icon-listing "></i>
+                                            </button>
+                                            <button class="texts" id="unlike-btn-listing-<%= listing._id %>"
+                                                style="display:inline-block;" data-listing-id="<%= listing._id %>">
+                                                <i class="fa-regular fa-heart unliked-icon-listing "></i>
+                                            </button>
+                                            <% } %>
+                                </div>
+                                <div class="bookmark-listing">
+                                    <p class="texts me-3 mt-2" id="bookmarks-count-<%= listing._id %>"><b>
+                                            <%=listing.bookmarkedBy.length%> Bookmarks
+                                        </b></p>
+                                    <% if(bookmarkFlags[i]) { %>
+                                        <button  class="texts" id="bookmark-btn-listing-<%= listing._id %>"
+                                            style="display:inline-block;" data-listing-id="<%= listing._id %>">
+                                            <i class="fa-solid fa-bookmark bookmarked-icon-listing "></i>
+                                        </button>
+                                        <button class="texts"  id="unbookmark-btn-listing-<%= listing._id %>" style="display:none;"
+                                            data-listing-id="<%= listing._id %>">
+                                            <i class="fa-regular fa-bookmark unbookmarked-icon-listing "></i>
+                                        </button>
+                                        <% } else { %>
+                                            <button class="texts" id="bookmark-btn-listing-<%= listing._id %>" style="display:none;"
+                                                data-listing-id="<%= listing._id %>">
+                                                <i class="fa-solid fa-bookmark bookmarked-icon-listing"></i>
+                                            </button>
+                                            <button class="texts" id="unbookmark-btn-listing-<%= listing._id %>"
+                                                style="display:inline-block;" data-listing-id="<%= listing._id %>">
+                                                <i class="fa-regular fa-bookmark unbookmarked-icon-listing "></i>
+                                            </button>
+                                            <% } %>
+                                </div>
+                            </div>
+                            <% if(listing.likedBy.length>=1) { %>
+                                <p class="texts" id="likes-count-<%= listing._id %>"><b>Liked by
+                                        <i><%=listing.likedBy[listing.likedBy.length-1].username%></i> and
+                                        <%=listing.likedBy.length-1%> others</b></p>
+                                <%} else { %>
+                                    <p class="texts" id="likes-count-<%= listing._id %>"><b>
+                                            <%=listing.likedBy.length%> Likes
+                                        </b></p>
+                                    <% } %>
+                                        <p class="card-text texts">
+                                            <b>
+                                                Title : </b>
+                                                <%=listing.title %>
+                                            <br>
+                                            <b>Category : </b><%= listing.category %>
+                                        </p>
                         </div>
                     </div>
-                </a>
-
-                <%}%>
+                    <% } %>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const likeButtons = document.querySelectorAll('.like-unlike-btn-listing button');
+            const bookmarkButtons = document.querySelectorAll('.bookmark-listing button');
+
+            likeButtons.forEach(button => {
+                button.addEventListener('click', async function (event) {
+                    const listingId = event.target.closest('button').dataset.listingId;
+                    const likeBtn = document.getElementById(`like-btn-listing-${listingId}`);
+                    const unlikeBtn = document.getElementById(`unlike-btn-listing-${listingId}`);
+                    const likesCountElem = document.getElementById(`likes-count-${listingId}`);
+
+                    try {
+                        let response;
+                        if (likeBtn.style.display === 'inline-block') {
+                            // Perform unlike action
+                            response = await fetch(`/listings/${listingId}/unlike`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            });
+                        } else {
+                            // Perform like action
+                            response = await fetch(`/listings/${listingId}/like`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            });
+                        }
+                        if (response.ok) {
+                            const data = await response.json();
+                            likesCountElem.innerHTML = `<b>${data.likesCount} Likes</b>`;
+                            likeBtn.style.display = likeBtn.style.display === 'none' ? 'inline-block' : 'none';
+                            unlikeBtn.style.display = unlikeBtn.style.display === 'inline-block' ? 'none' : 'inline-block';
+                        } else {
+                            const errorData = await response.json();
+                            alert(errorData.message || 'Failed to update like status');
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Please Login first!');
+                    }
+                });
+            });
+
+            bookmarkButtons.forEach(button => {
+                button.addEventListener('click', async function (event) {
+                    const listingId = event.target.closest('button').dataset.listingId;
+                    const bookmarkBtn = document.getElementById(`bookmark-btn-listing-${listingId}`);
+                    const unbookmarkBtn = document.getElementById(`unbookmark-btn-listing-${listingId}`);
+                    const bookmarksCountElem = document.getElementById(`bookmarks-count-${listingId}`);
+                    try {
+                        let response;
+                        if (bookmarkBtn.style.display === 'inline-block') {
+                            // Perform unlike action
+                            response = await fetch(`/listings/${listingId}/unbookmark`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            });
+                        } else {
+                            // Perform like action
+                            response = await fetch(`/listings/${listingId}/bookmark`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            });
+                        }
+                        if (response.ok) {
+                            const data = await response.json();
+                            bookmarksCountElem.innerHTML = `<b>${data.bookmarksCount} Bookmarks</b>`
+                            bookmarkBtn.style.display = bookmarkBtn.style.display === 'none' ? 'inline-block' : 'none';
+                            unbookmarkBtn.style.display = unbookmarkBtn.style.display === 'inline-block' ? 'none' : 'inline-block';
+                        } else {
+                            const errorData = await response.json();
+                            alert(errorData.message || 'Failed to update bookmark status');
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Please Login first!');
+                    }
+                });
+            });
+        });
+    </script>

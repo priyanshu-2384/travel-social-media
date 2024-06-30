@@ -1,0 +1,440 @@
+<% layout("layouts/boilerplate") %>
+    <style>
+        .card-user-title {
+            display: flex;
+            flex-direction: row;
+            padding-left: 0;
+            padding-top: 2rem;
+        }
+
+        .user-image-card-title {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
+
+        .review-header {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .user-image-card-review {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
+
+        .review-buttons {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .replies {
+            display: none;
+            margin-left: 2rem;
+        }
+
+        .reply-form {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .profile-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .follower {
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .follower:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .follower-body {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            padding: 10px;
+            min-height: 70px;
+        }
+
+        .follower-title {
+            margin-bottom: 0.2rem;
+        }
+
+        .mutual-followers {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .join-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgb(13, 179, 13);
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            margin-left: auto;
+        }
+
+        .leave-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgb(138, 5, 5);
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            margin-left: auto;
+        }
+
+        .follow-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #d83b44;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            margin-left: auto;
+        }
+
+        .follow-btn:hover {
+            background-color: #d83b44;
+        }
+
+        .unfollow-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #282828;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            margin-left: auto;
+        }
+
+        .unfollow-btn:hover {
+            background-color: #282828;
+        }
+
+        .heading {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .follower-body .ml-3 {
+            margin-left: 1rem;
+            flex: 1;
+        }
+
+        .username {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .username:hover {
+            text-decoration: underline;
+        }
+
+        /* Media query to hide the followers count on smaller screens */
+        @media (max-width: 768px) {
+            .mutual-followers {
+                display: none;
+            }
+        }
+    </style>
+
+<div class="row show-page mt-4" id="plan-page" data-plan-id="<%= plan._id %>" data-user-id="<%= currUser._id %>">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-8 mx-auto">
+        <h3 class="text-center texts">
+            <%= plan.city %>
+        </h3>
+        <div class="card-show col-12">
+            <img src="<%= plan.image.url %>" class="card-img-top show-img mb-3 mt-3" alt="Listing image">
+            <div class="card-body" style="display: flex; flex-direction: row;">
+                <p class="card-text texts">Plan Initiated by <i><%= plan.owner.username %></i></p>
+                <% if (isUserInterested) { %>
+                    <button id="leave-journey-btn" class="leave-btn texts" style="display: inline-block;">Leave Journey</button>
+                    <button id="join-journey-btn" class="join-btn texts" style="display: none;">Join Journey</button>
+                <% } else { %>
+                    <button id="leave-journey-btn" class="leave-btn texts" style="display: none;">Leave Journey</button>
+                    <button id="join-journey-btn" class="join-btn texts" style="display: inline-block;">Join Journey</button>
+                <% } %>
+            </div>
+            <hr class="texts">
+            <div class="container">
+                <div class="following-list">
+                    <div class="heading texts">Users Interested to travel <i><%= plan.city %></i> &nbsp; in <i><%= plan.month %></i></div>
+                    <div class="row" id="interested-users-list">
+                        <% plan.intrestedUsers.forEach(user => { %>
+                            <div class="col-12 interested-user" data-user-id="<%= user._id %>">
+                                <div class="card follower secbg texts">
+                                    <div class="card-body follower-body">
+                                        <img class="profile-logo" src="<%= user.image.url %>" alt="profile-logo">
+                                        <div class="ml-3">
+                                            <h5 class="card-title follower-title"><a class="username texts" href="/u/<%= user.username %>"><%= user.username %></a></h5>
+                                            <p class="card-text full-name texts"><%= user.contact %></p>
+                                        </div>
+                                        <p class="card-text mutual-followers texts me-3 mt-4" id="followers-count-<%= user._id %>"><b><%= user.followers.length %> followers</b></p>
+                                        <div class="follow-unfollow">
+                                            <% if (currUser && currUser.username != user.username) { %>
+                                                <% if (currUser.following.includes(user._id)) { %>
+                                                    <button id="unfollow-btn-<%= user._id %>" class="primary unfollow btn btn-dark" style="display:inline-block;" data-btn-plan-id="<%= plan._id %>" data-btn-user-id="<%= user._id %>" data-btn-user-username="<%= user.username %>">Unfollow</button>
+                                                    <button id="follow-btn-<%= user._id %>" class="primary follow btn btn-dark" style="display:none;" data-btn-plan-id="<%= plan._id %>" data-btn-user-id="<%= user._id %>" data-btn-user-username="<%= user.username %>">Follow</button>
+                                                <% } else { %>
+                                                    <button id="follow-btn-<%= user._id %>" class="primary follow btn btn-dark" style="display:inline-block;" data-btn-plan-id="<%= plan._id %>" data-btn-user-id="<%= user._id %>" data-btn-user-username="<%= user.username %>">Follow</button>
+                                                    <button id="unfollow-btn-<%= user._id %>" class="primary unfollow btn btn-dark" style="display:none;" data-btn-plan-id="<%= plan._id %>" data-btn-user-id="<%= user._id %>" data-btn-user-username="<%= user.username %>">Unfollow</button>
+                                                <% } %>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3 mb-3">
+                <% if (currUser) { %>
+                    <hr class="texts">
+                    <h4 class="texts">Communicate with explorers</h4>
+                    <form action="/plan/<%= plan._id %>/reviews" method="POST">
+                        <div class="mb-3 mt-3">
+                            <label for="comment" class="form-label texts">Comments</label>
+                            <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
+                        </div>
+                        <button class="btn btn-outline-dark edit-btn texts">Submit</button>
+                    </form>
+                <% } %>
+                <hr class="texts">
+                <p class="texts"><b>All Chats</b></p>
+                <div class="row">
+                    <% plan.reviews.forEach(review => { %>
+                        <div class="card mb-3 ms-2 secbg">
+                            <div class="card-body secbg">
+                                <div class="review-header">
+                                    <img src="<%= review.author.image.url %>" class="user-image-card-review me-2" alt="<%= review.author.username %>">
+                                    <h5 class="card-title texts me-2 mt-2"><%= review.author.username %> :</h5>
+                                    <p class="card-text texts me-2 mt-2"><%= review.comment %></p>
+                                </div>
+                                <p class="card-text texts"><i><%= review.createdAt.toString().split(" ").slice(1, 4).join(" -") %></i></p>
+                                <div class="review-buttons">
+                                    <% if ((currUser && currUser._id.equals(review.author._id)) || (currUser && currUser.username === "priyanshu_2384")) { %>
+                                        <form class="mb-3" method="POST" action="/plan/<%= plan._id %>/reviews/<%= review._id %>?_method=DELETE">
+                                            <button class="btn btn-sm btn-dark me-3">Delete</button>
+                                        </form>
+                                    <% } %>
+                                    <button class="btn btn-sm btn-dark me-3 mb-3 see-replies" style="display: inline-block">
+                                        See Replies <i class="fa-solid fa-angle-down"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-dark me-3 mb-3 hide-replies" style="display: none">
+                                        Hide Replies <i class="fa-solid fa-angle-up"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-dark mb-3 reply-button">
+                                        Reply <i class="fa-solid fa-reply"></i>
+                                    </button>
+                                </div>
+                                <div class="replies">
+                                    <% review.replies.forEach(reply => { %>
+                                        <div class="card mb-2 ms-2 secbg" style="border: none !important">
+                                            <div class="card-body secbg">
+                                                <div class="review-header">
+                                                    <img src="<%= reply.author.image.url %>" class="user-image-card-review me-2" alt="<%= reply.author.username %>">
+                                                    <h5 class="card-title texts me-2 mt-2"><%= reply.author.username %> :</h5>
+                                                    <p class="card-text texts me-2 mt-2"><%= reply.comment %></p>
+                                                </div>
+                                                <p class="card-text texts"><i><%= reply.createdAt.toString().split(" ").slice(1, 4).join(" -") %></i></p>
+                                                <% if ((currUser && currUser._id.equals(reply.author._id)) || (currUser && currUser.username === "priyanshu_2384")) { %>
+                                                    <form class="mb-3" method="POST" action="/plan/<%= plan._id %>/reviews/<%= review._id %>/replies/<%= reply._id %>?_method=DELETE">
+                                                        <button class="btn btn-sm btn-dark me-3">Delete</button>
+                                                    </form>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                </div>
+                                <% if (currUser) { %>
+                                    <div class="reply-form">
+                                        <form action="/plan/<%= plan._id %>/reviews/<%= review._id %>/replies" method="POST">
+                                            <div class="mb-3">
+                                                <textarea name="reply[comment]" class="form-control" rows="3" placeholder="Write your reply..." required></textarea>
+                                            </div>
+                                            <button class="btn btn-sm btn-dark mb-3">Submit Reply</button>
+                                        </form>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const planId = document.getElementById("plan-page").dataset.planId;
+            const currUserId = document.getElementById("plan-page").dataset.userId;
+            document.body.addEventListener('click', function (event) {
+                if (event.target.matches('#join-journey-btn')) {
+                    const button = event.target;
+                    fetch(`/plan/joinJourney/${planId}/${currUserId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                const user = data.user;
+                                const userCard = document.createElement('div');
+                                userCard.classList.add('col-12', 'interested-user');
+                                userCard.setAttribute('data-user-id', user._id);
+                                userCard.innerHTML = `
+                            <div class="card follower secbg texts">
+                                <div class="card-body follower-body">
+                                    <img class="profile-logo" src="${user.image.url}" alt="profile-logo">
+                                    <div class="ml-3">
+                                        <h5 class="card-title follower-title"><a class="username texts" href="#">${user.username}</a></h5>
+                                        <p class="card-text full-name texts">${user.contact}</p>
+                                    </div>
+                                    <p class="card-text mutual-followers texts me-3 mt-4"><b>${user.followers.length} followers</b></p>
+                                </div>
+                            </div>
+                        `;
+                                const interestedUsersList = document.getElementById('interested-users-list');
+                                interestedUsersList.insertBefore(userCard, interestedUsersList.firstChild);
+                                button.style.display = 'none';
+                                document.getElementById('leave-journey-btn').style.display = 'inline-block';
+                            } else {
+                                alert('Failed to join journey');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+
+                if (event.target.matches('#leave-journey-btn')) {
+                    const button = event.target;
+                    fetch(`/plan/leaveJourney/${planId}/${currUserId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                const userCard = document.querySelector(`.interested-user[data-user-id="${data.user._id}"]`);
+                                if (userCard) {
+                                    userCard.remove();
+                                }
+                                button.style.display = 'none';
+                                document.getElementById('join-journey-btn').style.display = 'inline-block';
+                            } else {
+                                alert('Failed to leave journey');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+
+        document.querySelectorAll('.see-replies').forEach(button => {
+            button.addEventListener('click', function () {
+                const replies = button.closest('.card').querySelector('.replies');
+                replies.style.display = 'block';
+                button.style.display = 'none';
+                button.nextElementSibling.style.display = 'inline-block';
+            });
+        });
+
+        document.querySelectorAll('.hide-replies').forEach(button => {
+            button.addEventListener('click', function () {
+                const replies = button.closest('.card').querySelector('.replies');
+                replies.style.display = 'none';
+                button.style.display = 'none';
+                button.previousElementSibling.style.display = 'inline-block';
+            });
+        });
+
+        document.querySelectorAll('.reply-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const replyForm = button.closest('.card').querySelector('.reply-form');
+                replyForm.style.display = replyForm.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const followButtons = document.querySelectorAll('.follow-unfollow button');
+            const currUserId = document.getElementById("plan-page").dataset.userId;
+            followButtons.forEach(button => {
+                button.addEventListener('click', async function (event) {
+                    const btnPlanId = event.target.dataset.btnPlanId;
+                    const btnUserId = event.target.dataset.btnUserId;
+                    const btnUserUsername = event.target.dataset.btnUserUsername;
+                    const followBtn = document.getElementById(`follow-btn-${btnUserId}`);
+                    const unfollowBtn = document.getElementById(`unfollow-btn-${btnUserId}`);
+                    const followersCountElem = document.getElementById(`followers-count-${btnUserId}`);
+
+                    try {
+                        let response;
+                        if (followBtn.style.display === 'inline-block') {
+                            // Perform follow action
+                            response = await fetch(`/u/${btnUserUsername}/follow`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            });
+                        } else {
+                            // Perform unfollow action
+                            response = await fetch(`/u/${btnUserUsername}/unfollow`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            });
+                        }
+                        if (response.ok) {
+                            const data = await response.json();
+                            followersCountElem.innerHTML = `<b>${data.followersCount} followers</b>`;
+                            followBtn.style.display = followBtn.style.display === 'none' ? 'inline-block' : 'none';
+                            unfollowBtn.style.display = unfollowBtn.style.display === 'inline-block' ? 'none' : 'inline-block';
+                        } else {
+                            const errorData = await response.json();
+                            alert(errorData.message || 'Failed to update Follow status');
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Failed to update follow status');
+                    }
+                });
+            });
+        });
+    </script>

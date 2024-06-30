@@ -1,0 +1,122 @@
+<% layout("layouts/boilerplate") %>
+
+<style>
+    .card {
+        width: 22rem;
+        margin: 1rem;
+        background-color: transparent !important;
+        border: none !important;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+    }
+
+    .card img {
+        height: 250px;
+        object-fit: cover;
+        transition: opacity 0.3s ease;
+    }
+
+    .card:hover img {
+        opacity: 0.8;
+    }
+
+    .card-body {
+        text-align: center;
+    }
+
+    .form-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .form-column {
+        flex: 1 1 45%;
+        margin: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .form-column {
+            flex: 1 1 100%;
+            margin: 0.5rem 0;
+        }
+    }
+</style>
+
+<div class="row texts" style="justify-content: center;">
+    <div class="col-10 texts">
+        <br><br>
+        <!-- Forms Section -->
+        <div class="form-container">
+            <!-- Search Form -->
+            <div class="form-column">
+                <h2 class="texts">Search Planned Trips</h2>
+                <form method="POST" action="/plan/searchPlan" class="search-form">
+                    <div class="mb-3 texts">
+                        <label for="city" class="form-label texts">City</label>
+                        <input placeholder="Enter City" name="city" type="text" class="form-control" required>
+                    </div>
+                    <div class="mb-3 texts">
+                        <label for="month" class="form-label texts">Month</label>
+                        <input placeholder="Enter Month" name="month" type="text" class="form-control" required>
+                    </div>
+                    <button class="btn btn-dark add-btn texts">Search</button>
+                </form>
+            </div>
+
+            <!-- Create Plan Form -->
+            <div class="form-column">
+                <h2 class="texts">Create Your Own Plan</h2>
+                <form method="POST" action="/plan/createPlan" enctype="multipart/form-data" class="create-plan-form">
+                    <div class="mb-3 texts">
+                        <label for="plan-city" class="form-label texts">City</label>
+                        <input placeholder="Enter City" name="city" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-inline" style="display: flex; flex-direction: row;">
+                        <div class="mb-3 texts">
+                            <label for="plan-month" class="form-label texts">Month</label>
+                            <input placeholder="Enter Month" name="month" type="text" class="form-control" required>
+                        </div>
+                        <div class="ms-2 mb-3 texts">
+                            <label for="plan-image" class="form-label texts">Display image</label>
+                            <input name="image" type="file" class="form-control" required>
+                        </div>
+                    </div>
+                    <button class="btn btn-dark add-btn texts">Create Plan</button>
+                </form>
+            </div>
+        </div>
+        <br><br>
+    </div>
+
+    
+    <div class="col-12 texts">
+        <div class=" mb-3">
+            <h3 class="texts text-center">Suggested Plans</h3>
+        </div>
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1" style="justify-content: center;">
+            <%for(plan of plans) { %>
+                <div class="col listing-card bg">
+                    <div class="card">
+                        <a href="/plan/<%=plan._id%>" style="text-decoration: none;">
+                            <h5 class="card-text texts text-center" >
+                                <b><%=plan.city%></b>
+                            </h5>
+                        <img src="<%=plan.image.url%>"
+                            class="card-img-top img-hover bg" alt="listing_image">
+                        <div class="card-body" style="display: flex; flex-direction: row;">
+                            <p class="card-text texts " style="margin-left: auto;">
+                                <b><%=plan.intrestedUsers.length%> <i>users Joined</i></b> <i class="fa-solid fa-user-group"></i>
+                            </p>
+                        </div>
+                    </a>
+                    </div>
+                </div>
+            <%}%>
+            
+        </div>
+    </div>
+</div>

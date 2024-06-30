@@ -11,20 +11,21 @@ const upload = multer({storage});   //multer will save the uploads , which are d
 
 //Index Route 
 router.get("/", wrapAsync(listingController.index));
-
 //Get Route Top Rated
 router.get("/topRated", wrapAsync(listingController.mostReviewed));
 
 //New Route
 router.get("/new",isLoggedIn, listingController.createListingForm);
-router.post("/",upload.single('listing[image]'),validateListing, wrapAsync(listingController.createListing));
+router.post("/",upload.array('images',5),validateListing, wrapAsync(listingController.createListing));
 
 //search route
 router.post("/city",listingController.search);
-
+router.get("/myBookmarks",wrapAsync(listingController.myBookmarks));
 //filter by price
 router.get("/filter", listingController.filterShow);
 router.post("/filter/byPrice",wrapAsync(listingController.filter));
+
+router.get("/categories/:id",wrapAsync(listingController.sortByCategory));
 
 //Show Route,.... Always put this id route below as if not done, the routes which will be below this and have same url like : /listings/new here new will be intrepreted as id
 router.get("/:id", wrapAsync(listingController.showListings));
@@ -37,5 +38,16 @@ router.put("/:id",isLoggedIn,isOwner,upload.single('listing[image]'),validateLis
 
 //Delete Route
 router.delete("/:id",isLoggedIn,isOwner, wrapAsync(listingController.deleteListing));
+
+//Like listing
+router.post("/:id/like",isLoggedIn,wrapAsync(listingController.like));
+//UnLike listing
+router.post("/:id/unlike",isLoggedIn,wrapAsync(listingController.unlike));
+
+//Bookmark listing
+router.post("/:id/bookmark",isLoggedIn,wrapAsync(listingController.bookmark));
+//UnBookmark listing
+router.post("/:id/unbookmark",isLoggedIn,wrapAsync(listingController.unbookmark));
+
 
 module.exports = router;
